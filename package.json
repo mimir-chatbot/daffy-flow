@@ -35,6 +35,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.15.17",
+    "@vue-flow/core": "^1.47.0",
     "bumpp": "^10.1.0",
     "tsdown": "^0.11.9",
     "typescript": "^5.8.3",
