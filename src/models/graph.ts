@@ -1,63 +1,60 @@
-import type {XYPosition} from "@vue-flow/core";
+import type { XYPosition } from '@vue-flow/core'
 
-export type DaffyNodeAgentSettings = {
-    api_key: string
-    stream: boolean
-    system_prompt: string
-    temperature: number
-    model: string
+export interface DaffyNodeAgentSettings {
+  api_key: string
+  stream: boolean
+  system_prompt: string
+  temperature: number
+  model: string
 }
 
-export type DaffyTool = {
-    name: string
-    settings: Record<string, any>
+export interface DaffyTool {
+  name: string
+  settings: Record<string, any>
 }
 
-
-export type DaffyNodeBase = {
-    id: string
-    settings: Record<string, any>
-    position: XYPosition
+export interface DaffyNodeBase {
+  id: string
+  settings: Record<string, any>
+  position: XYPosition
 }
 
 export type DaffyToolNode = DaffyNodeBase & {
-    node: "ToolNode"
-    parallel_tool_calling: boolean
-    tools: DaffyTool[]
+  node: 'ToolNode'
+  parallel_tool_calling: boolean
+  tools: DaffyTool[]
 }
 
 export type DaffyNodeAgent = DaffyNodeBase & {
-    node: "AgentNode"
-    settings: DaffyNodeAgentSettings
-    parallel_tool_calling: boolean
-    tools: DaffyTool[]
+  node: 'AgentNode'
+  settings: DaffyNodeAgentSettings
+  parallel_tool_calling: boolean
+  tools: DaffyTool[]
 }
 export type DaffyRagNode = DaffyNodeBase & {
-    node: "RagNode"
+  node: 'RagNode'
 }
 
 export type DaffyPostgressIntrospectionNode = DaffyNodeBase & {
-    node: "PostgressIntrospectionNode"
+  node: 'PostgressIntrospectionNode'
 }
 
 export type DaffyMSSQLIntrospectionNode = DaffyNodeBase & {
-    node: "MSSQLIntrospectionNode"
+  node: 'MSSQLIntrospectionNode'
 }
 
-
-export type DaffyEdge = {
-    source: string
-    target?: string
-    label?: string
-    condition?: Record<string, string>
-    source_handle?: string
-    target_handle?: string
+export interface DaffyEdge {
+  source: string
+  target?: string
+  label?: string
+  condition?: Record<string, string>
+  source_handle?: string
+  target_handle?: string
 }
 
-export type DaffyGraph = {
+export interface DaffyGraph {
 
-    nodes: (DaffyNodeAgent|DaffyToolNode|DaffyRagNode|DaffyPostgressIntrospectionNode|DaffyMSSQLIntrospectionNode)[]
-    edges: DaffyEdge[]
+  nodes: (DaffyNodeAgent | DaffyToolNode | DaffyRagNode | DaffyPostgressIntrospectionNode | DaffyMSSQLIntrospectionNode)[]
+  edges: DaffyEdge[]
 
 }
-
