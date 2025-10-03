@@ -32,15 +32,15 @@ export type DaffyNodeAgent = DaffyNodeBase & {
     parallel_tool_calling: boolean
     tools: DaffyTool[]
 }
-export type DaffyRagNode = {
+export type DaffyRagNode = DaffyNodeBase & {
     node: "RagNode"
 }
 
-export type DaffyPostgressIntrospectionNode = {
+export type DaffyPostgressIntrospectionNode = DaffyNodeBase & {
     node: "PostgressIntrospectionNode"
 }
 
-export type DaffyMSSQLIntrospectionNode = {
+export type DaffyMSSQLIntrospectionNode = DaffyNodeBase & {
     node: "MSSQLIntrospectionNode"
 }
 
