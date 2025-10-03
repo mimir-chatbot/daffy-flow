@@ -3,3 +3,5 @@ declare global {
     [K in keyof T]: T[K]
   } & {}
 }
+
+export { }

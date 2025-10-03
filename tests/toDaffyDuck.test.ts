@@ -1,11 +1,8 @@
-import { expect } from 'vitest'
-import { AGENT, DAFFY_TOOLS, END, RAG, START, toDaffyDuck, TOOL, TOOL_MCP } from '../src'
+import { expect, it } from 'vitest'
+import { DAFFY_NODES, DAFFY_TOOLS, toDaffyDuck } from '../src'
 
 it('toDaffyDuckEmpty', () => {
-  expect(toDaffyDuck([], [])).toStrictEqual({
-    nodes: [],
-    edges: [],
-  })
+  expect(toDaffyDuck([], [])).toStrictEqual({ nodes: [], edges: [] })
 })
 
 it('toDaffyDuckOnlyAgent', () => {
@@ -14,7 +11,7 @@ it('toDaffyDuckOnlyAgent', () => {
   expect(toDaffyDuck([
     {
       id: 'START',
-      type: START,
+      type: DAFFY_NODES.START,
       position: {
         x: 1,
         y: 1,
@@ -23,7 +20,7 @@ it('toDaffyDuckOnlyAgent', () => {
     },
     {
       id: 'END',
-      type: END,
+      type: DAFFY_NODES.END,
       position: {
         x: 1,
         y: 1,
@@ -32,7 +29,7 @@ it('toDaffyDuckOnlyAgent', () => {
     },
     {
       id: 'agent_test',
-      type: AGENT,
+      type: DAFFY_NODES.AGENT,
       position: {
         x: 1,
         y: 1,
@@ -51,16 +48,16 @@ it('toDaffyDuckOnlyAgent', () => {
   ], [
     {
       id: 'start_agent',
-      source: START,
+      source: DAFFY_NODES.START,
       target: 'agent_test',
-      sourceHandle: START,
+      sourceHandle: DAFFY_NODES.START,
       targetHandle: 'agent',
     },
     {
       id: 'agent_end',
       source: 'agent_test',
-      target: END,
-      sourceHandle: END,
+      target: DAFFY_NODES.END,
+      sourceHandle: DAFFY_NODES.END,
       targetHandle: 'agent',
     },
   ])).toStrictEqual({
@@ -85,15 +82,15 @@ it('toDaffyDuckOnlyAgent', () => {
     ],
     edges: [
       {
-        source: START,
+        source: DAFFY_NODES.START,
         target: 'agent_test',
-        source_handle: START,
+        source_handle: DAFFY_NODES.START,
         target_handle: 'agent',
       },
       {
         source: 'agent_test',
-        target: END,
-        source_handle: END,
+        target: DAFFY_NODES.END,
+        source_handle: DAFFY_NODES.END,
         target_handle: 'agent',
       },
     ],
@@ -106,7 +103,7 @@ it('toDaffyDuckRagAgentWithTools', () => {
   expect(toDaffyDuck([
     {
       id: 'START',
-      type: START,
+      type: DAFFY_NODES.START,
       position: {
         x: 1,
         y: 1,
@@ -115,7 +112,7 @@ it('toDaffyDuckRagAgentWithTools', () => {
     },
     {
       id: 'END',
-      type: END,
+      type: DAFFY_NODES.END,
       position: {
         x: 1,
         y: 1,
@@ -124,7 +121,7 @@ it('toDaffyDuckRagAgentWithTools', () => {
     },
     {
       id: 'agent_test',
-      type: AGENT,
+      type: DAFFY_NODES.AGENT,
       position: {
         x: 1,
         y: 1,
@@ -142,7 +139,7 @@ it('toDaffyDuckRagAgentWithTools', () => {
     },
     {
       id: 'rag',
-      type: RAG,
+      type: DAFFY_NODES.RAG,
       data: {
         config: {
           collection_name: 'test',
@@ -155,9 +152,9 @@ it('toDaffyDuckRagAgentWithTools', () => {
     },
     {
       id: 'mcp',
-      type: TOOL,
+      type: DAFFY_NODES.TOOL,
       data: {
-        value: TOOL_MCP,
+        value: 'mcp',
         config: {
           websearch: {
             url: 'test',
@@ -173,8 +170,8 @@ it('toDaffyDuckRagAgentWithTools', () => {
   ], [
     {
       id: 'start_agent',
-      source: START,
-      sourceHandle: START,
+      source: DAFFY_NODES.START,
+      sourceHandle: DAFFY_NODES.START,
       target: 'rag',
       targetHandle: 'rag',
     },
@@ -195,8 +192,8 @@ it('toDaffyDuckRagAgentWithTools', () => {
     {
       id: 'agent_end',
       source: 'agent_test',
-      sourceHandle: END,
-      target: END,
+      sourceHandle: DAFFY_NODES.END,
+      target: DAFFY_NODES.END,
       targetHandle: 'agent',
     },
   ])).toStrictEqual({
@@ -218,7 +215,7 @@ it('toDaffyDuckRagAgentWithTools', () => {
         },
         tools: [
           {
-            name: DAFFY_TOOLS[TOOL_MCP],
+            name: DAFFY_TOOLS.mcp,
             settings: {
               websearch: {
                 url: 'test',
@@ -250,7 +247,7 @@ it('toDaffyDuckRagAgentWithTools', () => {
         },
         tools: [
           {
-            name: DAFFY_TOOLS[TOOL_MCP],
+            name: DAFFY_TOOLS.mcp,
             settings: {
               websearch: {
                 url: 'test',
@@ -263,13 +260,13 @@ it('toDaffyDuckRagAgentWithTools', () => {
     ],
     edges: [
       {
-        source: START,
-        target: RAG,
-        source_handle: START,
+        source: DAFFY_NODES.START,
+        target: DAFFY_NODES.RAG,
+        source_handle: DAFFY_NODES.START,
         target_handle: 'rag',
       },
       {
-        source: RAG,
+        source: DAFFY_NODES.RAG,
         target: 'agent_test',
         source_handle: 'rag',
         target_handle: 'agent',
@@ -277,8 +274,8 @@ it('toDaffyDuckRagAgentWithTools', () => {
 
       {
         source: 'agent_test',
-        target: END,
-        source_handle: END,
+        target: DAFFY_NODES.END,
+        source_handle: DAFFY_NODES.END,
         target_handle: 'agent',
       },
       {

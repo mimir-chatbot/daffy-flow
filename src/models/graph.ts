@@ -13,35 +13,27 @@ export interface DaffyTool {
   settings: Record<string, any>
 }
 
-export interface DaffyNodeBase {
+export interface DaffyNodeBase<T extends string = string, S extends Record<string, any> = Record<string, any>> {
   id: string
-  settings: Record<string, any>
+  node: T
+  settings: S
   position: XYPosition
 }
 
-export type DaffyToolNode = DaffyNodeBase & {
-  node: 'ToolNode'
+interface WithTools {
   parallel_tool_calling: boolean
   tools: DaffyTool[]
 }
 
-export type DaffyNodeAgent = DaffyNodeBase & {
-  node: 'AgentNode'
-  settings: DaffyNodeAgentSettings
-  parallel_tool_calling: boolean
-  tools: DaffyTool[]
-}
-export type DaffyRagNode = DaffyNodeBase & {
-  node: 'RagNode'
-}
+export type DaffyAgentNode = Prettify<DaffyNodeBase<'AgentNode', DaffyNodeAgentSettings> & WithTools>
 
-export type DaffyPostgressIntrospectionNode = DaffyNodeBase & {
-  node: 'PostgressIntrospectionNode'
-}
+export type DaffyToolNode = Prettify<DaffyNodeBase<'ToolNode'> & WithTools>
 
-export type DaffyMSSQLIntrospectionNode = DaffyNodeBase & {
-  node: 'MSSQLIntrospectionNode'
-}
+export type DaffyRagNode = Prettify<DaffyNodeBase<'RagNode'>>
+
+export type DaffyPostgresIntrospectionNode = Prettify<DaffyNodeBase<'PostgresIntrospectionNode'>>
+
+export type DaffyMSSQLIntrospectionNode = Prettify<DaffyNodeBase<'MSSQLIntrospectionNode'>>
 
 export interface DaffyEdge {
   source: string
@@ -52,9 +44,9 @@ export interface DaffyEdge {
   target_handle?: string
 }
 
+export type DaffyNode = DaffyAgentNode | DaffyToolNode | DaffyRagNode | DaffyPostgresIntrospectionNode | DaffyMSSQLIntrospectionNode
+
 export interface DaffyGraph {
-
-  nodes: (DaffyNodeAgent | DaffyToolNode | DaffyRagNode | DaffyPostgressIntrospectionNode | DaffyMSSQLIntrospectionNode)[]
+  nodes: DaffyNode[]
   edges: DaffyEdge[]
-
 }
