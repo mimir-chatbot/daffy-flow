@@ -49,7 +49,7 @@ export type DaffyEdge = {
     source: string
     target?: string
     label?: string
-    condition?: string
+    condition?: Record<string, string>
     source_handle?: string
     target_handle?: string
 }

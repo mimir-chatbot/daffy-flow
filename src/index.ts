@@ -8,6 +8,7 @@ import type {
   DaffyToolNode
 } from "./models/graph";
 import type {Edge, Node} from "@vue-flow/core";
+import * as console from "node:console";
 // export class DaffyFlow {
 //
 //   constructor() {
@@ -23,28 +24,28 @@ import type {Edge, Node} from "@vue-flow/core";
 // }
 //
 
-const START: string = "start";
-const END: string = "end";
-const AGENT: string = "agent";
-const RAG: string = "rag";
-const TOOL: string = "tool";
-const TOOL_MCP: string = "mcp";
-const TOOL_EXCEL: string = "excel";
-const TOOL_POSTGRES: string = "postgres";
+export const START: string = "start";
+export const END: string = "end";
+export const AGENT: string = "agent";
+export const RAG: string = "rag";
+export const TOOL: string = "tool";
+export const TOOL_MCP: string = "mcp";
+export const TOOL_EXCEL: string = "excel";
+export const TOOL_POSTGRES: string = "postgres";
 
-const DAFFY_TOOLS: Record<string, string> = {
-  TOOL_MCP: "MCPTool",
-  TOOL_EXCEL: "ExcelGeneratorTool",
-  TOOL_POSTGRES: "PostgressTool",
+export const DAFFY_TOOLS: Record<string, string> = {
+  mcp: "MCPTool",
+  excel: "ExcelGeneratorTool",
+  postgres: "PostgressTool",
 }
 
-function findToolTarget(source: string, edges: Edge[]): [index: number, source: string]|null {
+function findToolTarget(source: string, edges: Edge[]): [index: null|number, source?: null|string] {
   for (const [index, edge] of edges.entries()) {
     if (source === edge.source) {
-      return (index, edge.target);
+      return [index, edge.target];
     }
   }
-  return null
+  return [null, null]
 }
 
 
@@ -63,15 +64,15 @@ export const toDaffyDuck  =  (nodes: Node[] = [], edges: Edge[] = []): DaffyGrap
     }
     if (node.type === TOOL) {
       const [index, targetTool] = findToolTarget(node.id, edges)
-      if (targetTool === null) {
+      if (targetTool === null || index === null) {
         continue
       }
       const daffyToolName = DAFFY_TOOLS[node?.data["value"]]
 
 
-      tools[targetTool[1]] = {
+      tools[targetTool as string] = {
         name: daffyToolName,
-        settings: node?.data["settings"],
+        settings: node?.data["config"],
       }
 
       edges.splice(index, 1)
@@ -112,15 +113,18 @@ export const toDaffyDuck  =  (nodes: Node[] = [], edges: Edge[] = []): DaffyGrap
     const daffyEdge: DaffyEdge = {
       source: edge.source,
       target: edge.target,
+      source_handle: edge.sourceHandle ?? "",
+      target_handle: edge.targetHandle ?? ""
     }
     daffyEdges.push(daffyEdge)
   }
 
-  if (tools.length > 0) {
+  if (Object.keys(tools).length > 0) {
+
     const toolNode: DaffyToolNode = {
       id: "tool_node",
       node: "ToolNode",
-      parallel_tool_calling: false,
+      parallel_tool_calling: true,
       position: {
         x: 0,
         y: 0
@@ -130,20 +134,29 @@ export const toDaffyDuck  =  (nodes: Node[] = [], edges: Edge[] = []): DaffyGrap
     }
 
     for (const target in tools) {
-      for (const tool of tools[target]) {
-        toolNode.tools.push(tool)
+
+      toolNode.tools.push(tools[target])
+      for (const node of daffyNodes) {
+        if (node.id === target && node.node == "AgentNode" ) {
+          node.tools.push(tools[target])
+          break
+        }
       }
 
-      // daffyEdges.push({
-      //   source: target,
-      //   conditions: {
-      //     "tool_node": "tool_conditions"
-      //   }
-      // })
+      daffyNodes.push(toolNode)
+      daffyEdges.push({
+        source: target,
+        condition: {
+          "tool_node": "tools_condition",
+        }
+      })
+      daffyEdges.push({
+        source: "tool_node",
+        target: target,
+      })
     }
 
   }
-
 
   return {
     nodes: daffyNodes,
