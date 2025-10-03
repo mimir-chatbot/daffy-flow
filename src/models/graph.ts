@@ -25,15 +25,15 @@ interface WithTools {
   tools: DaffyTool[]
 }
 
-export type DaffyAgentNode = Prettify<DaffyNodeBase<'AgentNode', DaffyNodeAgentSettings> & WithTools>
+export type DaffyAgentNode = DaffyNodeBase<'AgentNode', DaffyNodeAgentSettings> & WithTools
 
-export type DaffyToolNode = Prettify<DaffyNodeBase<'ToolNode'> & WithTools>
+export type DaffyToolNode = DaffyNodeBase<'ToolNode'> & WithTools
 
-export type DaffyRagNode = Prettify<DaffyNodeBase<'RagNode'>>
+export type DaffyRagNode = DaffyNodeBase<'RagNode'>
 
-export type DaffyPostgresIntrospectionNode = Prettify<DaffyNodeBase<'PostgresIntrospectionNode'>>
+export type DaffyPostgresIntrospectionNode = DaffyNodeBase<'PostgresIntrospectionNode'>
 
-export type DaffyMSSQLIntrospectionNode = Prettify<DaffyNodeBase<'MSSQLIntrospectionNode'>>
+export type DaffyMSSQLIntrospectionNode = DaffyNodeBase<'MSSQLIntrospectionNode'>
 
 export interface DaffyEdge {
   source: string

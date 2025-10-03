@@ -1,5 +1,5 @@
+import { DAFFY_NODES, DAFFY_TOOLS, toDaffyDuck } from '@daffy'
 import { expect, it } from 'vitest'
-import { DAFFY_NODES, DAFFY_TOOLS, toDaffyDuck } from '../src'
 
 it('toDaffyDuckEmpty', () => {
   expect(toDaffyDuck([], [])).toStrictEqual({ nodes: [], edges: [] })

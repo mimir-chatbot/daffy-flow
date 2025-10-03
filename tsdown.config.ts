@@ -5,5 +5,7 @@ export default defineConfig([
     entry: ['./src/index.ts'],
     platform: 'neutral',
     dts: true,
+    sourcemap: true,
+    format: 'esm',
   },
 ])

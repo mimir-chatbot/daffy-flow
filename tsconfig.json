@@ -7,6 +7,11 @@
     "moduleDetection": "force",
     "module": "preserve",
     "moduleResolution": "bundler",
+    "paths": {
+      "@daffy": [
+        "./src/index.ts"
+      ]
+    },
     "resolveJsonModule": true,
     "types": [
       "node"
@@ -16,12 +21,13 @@
     "declaration": true,
     "emitDeclarationOnly": true,
     "esModuleInterop": true,
+    "isolatedDeclarations": true,
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
     "skipLibCheck": true
   },
   "include": [
     "src",
-    "types.d.ts"
+    "tests"
   ]
 }
