@@ -85,16 +85,16 @@ test('toDaffyDuckOnlyAgent', () => {
     ],
     edges: [
       {
-        "source": START,
-        "target": "agent_test",
-        "source_handle": START,
-        "target_handle": "agent"
+        source: START,
+        target: "agent_test",
+        source_handle: START,
+        target_handle: "agent"
       },
       {
-        "source": "agent_test",
-        "target": END,
-        "source_handle": END,
-        "target_handle": "agent"
+        source: "agent_test",
+        target: END,
+        source_handle: END,
+        target_handle: "agent"
       }
     ]
   })
