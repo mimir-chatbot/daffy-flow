@@ -154,9 +154,11 @@ it('toDaffyDuckRagAgentWithTools', () => {
       data: {
         value: DAFFY_TO_FLOW_TOOLS.MCPTool,
         config: {
-          websearch: {
-            url: 'test',
-            transport: 'sse',
+          servers: {
+            websearch: {
+              url: 'test',
+              transport: 'sse',
+            },
           },
         },
       },
@@ -215,9 +217,11 @@ it('toDaffyDuckRagAgentWithTools', () => {
           {
             name: FLOW_TO_DAFFY_TOOLS.mcp,
             settings: {
-              websearch: {
-                url: 'test',
-                transport: 'sse',
+              servers: {
+                websearch: {
+                  url: 'test',
+                  transport: 'sse',
+                },
               },
             },
           },
@@ -247,9 +251,11 @@ it('toDaffyDuckRagAgentWithTools', () => {
           {
             name: FLOW_TO_DAFFY_TOOLS.mcp,
             settings: {
-              websearch: {
-                url: 'test',
-                transport: 'sse',
+              servers: {
+                websearch: {
+                  url: 'test',
+                  transport: 'sse',
+                },
               },
             },
           },

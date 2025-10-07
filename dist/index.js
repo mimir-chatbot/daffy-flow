@@ -47,20 +47,42 @@ function fromDaffyDuck(graph) {
 		}
 	}];
 	const edges = [];
-	for (const daffyNode of graph.nodes) {
-		const toolConfig = "tools" in daffyNode && daffyNode.tools.length > 0 ? daffyNode.tools[0] : void 0;
-		nodes.push({
-			id: daffyNode.id,
-			type: DAFFY_TO_FLOW_NODES[daffyNode.node],
-			position: daffyNode.position,
-			data: {
-				config: toolConfig && daffyNode.node === "ToolNode" ? toolConfig.settings : daffyNode.settings,
-				..."parallel_tool_calling" in daffyNode ? { parallel_tool_calling: daffyNode.parallel_tool_calling } : {},
-				...toolConfig && daffyNode.node === "ToolNode" ? { value: DAFFY_TO_FLOW_TOOLS[toolConfig.name] } : {}
-			}
+	for (const daffyNode of graph.nodes.filter((n) => n.node !== "ToolNode")) nodes.push({
+		id: daffyNode.id,
+		type: DAFFY_TO_FLOW_NODES[daffyNode.node],
+		position: daffyNode.position,
+		data: {
+			config: daffyNode.settings,
+			..."parallel_tool_calling" in daffyNode ? { parallel_tool_calling: daffyNode.parallel_tool_calling } : {}
+		}
+	});
+	graph.nodes.filter((n) => n.node === "AgentNode").forEach((node) => {
+		node.tools.forEach((tool, index) => {
+			const toolType = DAFFY_TO_FLOW_TOOLS[tool.name];
+			nodes.push({
+				id: `tool_node_${toolType}_${index}`,
+				type: DAFFY_TO_FLOW_NODES.ToolNode,
+				position: {
+					x: 0,
+					y: 0
+				},
+				data: {
+					value: toolType,
+					config: tool.settings
+				}
+			});
 		});
-	}
-	edges.push(...graph.edges.map((e, index) => ({
+		edges.push(...node.tools.map((tool, index) => {
+			const toolType = DAFFY_TO_FLOW_TOOLS[tool.name];
+			return {
+				id: `end_tool_node_${toolType}_${index}`,
+				source: node.id,
+				target: `tool_node_${toolType}_${index}`,
+				sourceHandle: "tools"
+			};
+		}));
+	});
+	edges.push(...graph.edges.filter((e) => !e.id?.startsWith("tool_node")).map((e, index) => ({
 		id: e.id || `${e.source}_${e.target}_${index}`,
 		source: e.source,
 		target: e.target || "",

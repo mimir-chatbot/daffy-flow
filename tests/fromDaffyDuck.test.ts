@@ -124,9 +124,11 @@ it('fromDaffyDuckRagAgentWithTools', () => {
           {
             name: FLOW_TO_DAFFY_TOOLS.mcp,
             settings: {
-              websearch: {
-                url: 'test',
-                transport: 'sse',
+              servers: {
+                websearch: {
+                  url: 'test',
+                  transport: 'sse',
+                },
               },
             },
           },
@@ -156,9 +158,11 @@ it('fromDaffyDuckRagAgentWithTools', () => {
           {
             name: FLOW_TO_DAFFY_TOOLS.mcp,
             settings: {
-              websearch: {
-                url: 'test',
-                transport: 'sse',
+              servers: {
+                websearch: {
+                  url: 'test',
+                  transport: 'sse',
+                },
               },
             },
           },
@@ -206,99 +210,101 @@ it('fromDaffyDuckRagAgentWithTools', () => {
       },
     ],
   })).toStrictEqual({
-    nodes: [{
-      id: 'START',
-      type: DAFFY_TO_FLOW_NODES.StartNode,
-      position: { x: -500, y: 0 },
-    },
-    {
-      id: 'END',
-      type: DAFFY_TO_FLOW_NODES.EndNode,
-      position: { x: 500, y: 0 },
-    },
-    {
-      id: 'agent_test',
-      type: DAFFY_TO_FLOW_NODES.AgentNode,
-      position: {
-        x: 0,
-        y: 0,
+    nodes: [
+      {
+        id: 'START',
+        type: DAFFY_TO_FLOW_NODES.StartNode,
+        position: { x: -500, y: 0 },
       },
-      data: {
-        config: {
-          api_key: '',
-          stream: true,
-          system_prompt: '',
-          temperature: 0.1,
-          model: 'openai:gpt-4o',
+      {
+        id: 'END',
+        type: DAFFY_TO_FLOW_NODES.EndNode,
+        position: { x: 500, y: 0 },
+      },
+      {
+        id: 'agent_test',
+        type: DAFFY_TO_FLOW_NODES.AgentNode,
+        position: {
+          x: 0,
+          y: 0,
         },
-        parallel_tool_calling: true,
-      },
-    },
-    {
-      id: 'rag',
-      type: DAFFY_TO_FLOW_NODES.RagNode,
-      data: {
-        config: {
-          collection_name: 'test',
+        data: {
+          config: {
+            api_key: '',
+            stream: true,
+            system_prompt: '',
+            temperature: 0.1,
+            model: 'openai:gpt-4o',
+          },
+          parallel_tool_calling: true,
         },
       },
-      position: {
-        x: 0,
-        y: 0,
-      },
-    },
-    {
-      id: 'tool_node',
-      type: DAFFY_TO_FLOW_NODES.ToolNode,
-      data: {
-        value: DAFFY_TO_FLOW_TOOLS.MCPTool,
-        config: {
-          websearch: {
-            url: 'test',
-            transport: 'sse',
+      {
+        id: 'rag',
+        type: DAFFY_TO_FLOW_NODES.RagNode,
+        data: {
+          config: {
+            collection_name: 'test',
           },
         },
-        parallel_tool_calling: true,
+        position: {
+          x: 0,
+          y: 0,
+        },
       },
-      position: {
-        x: 0,
-        y: 0,
+      {
+        id: 'tool_node_mcp_0',
+        type: DAFFY_TO_FLOW_NODES.ToolNode,
+        data: {
+          value: DAFFY_TO_FLOW_TOOLS.MCPTool,
+          config: {
+            servers: {
+              websearch: {
+                url: 'test',
+                transport: 'sse',
+              },
+            },
+          },
+        },
+        position: {
+          x: 0,
+          y: 0,
+        },
       },
-    }],
-    edges: [{
-      id: 'start_agent',
-      source: 'start',
-      target: 'rag',
-      sourceHandle: 'start',
-      targetHandle: 'rag',
-    },
-    {
-      id: 'rag_agent',
-      source: 'rag',
-      target: 'agent_test',
-      sourceHandle: 'rag',
-      targetHandle: 'agent',
-    },
-    {
-      id: 'agent_end',
-      source: 'agent_test',
-      target: 'end',
-      sourceHandle: 'end',
-      targetHandle: 'agent',
-    },
-    {
-      id: 'tool_node_agent_test',
-      source: 'agent_test',
-      target: 'tool_node',
-      sourceHandle: 'agent',
-      targetHandle: 'tools',
-    },
-    {
-      id: 'end_tool_node',
-      source: 'tool_node',
-      target: 'agent_test',
-      sourceHandle: 'tools',
-      targetHandle: 'agent',
-    }],
+    ],
+    edges: [
+      {
+        id: 'end_tool_node_mcp_0',
+        source: 'agent_test',
+        target: 'tool_node_mcp_0',
+        sourceHandle: 'tools',
+      }, {
+        id: 'start_agent',
+        source: 'start',
+        target: 'rag',
+        sourceHandle: 'start',
+        targetHandle: 'rag',
+      },
+      {
+        id: 'rag_agent',
+        source: 'rag',
+        target: 'agent_test',
+        sourceHandle: 'rag',
+        targetHandle: 'agent',
+      },
+      {
+        id: 'agent_end',
+        source: 'agent_test',
+        target: 'end',
+        sourceHandle: 'end',
+        targetHandle: 'agent',
+      },
+      {
+        id: 'end_tool_node',
+        source: 'tool_node',
+        target: 'agent_test',
+        sourceHandle: 'tools',
+        targetHandle: 'agent',
+      }],
   })
 })
