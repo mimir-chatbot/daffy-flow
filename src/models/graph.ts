@@ -37,7 +37,7 @@ export type DaffyPostgresIntrospectionNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_
 export type DaffyMSSQLIntrospectionNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.mssql_introspection>
 
 export interface DaffyEdge {
-  id: string
+  id?: string
   source: string
   target?: string
   condition?: Record<string, string>

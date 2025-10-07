@@ -23,13 +23,13 @@ export function fromDaffyDuck(graph: DaffyGraph): { nodes: Node[], edges: Edge[]
     })
   }
 
-  edges.push(...graph.edges.map(e => ({
-    id: e.id,
+  edges.push(...graph.edges.map((e, index) => ({
+    id: e.id || `${e.source}_${e.target}_${index}`,
     source: e.source,
-    target: e.target,
+    target: e.target || '',
     sourceHandle: e.source_handle,
     targetHandle: e.target_handle,
-  } as Edge)))
+  } satisfies Edge)))
 
   return {
     nodes,

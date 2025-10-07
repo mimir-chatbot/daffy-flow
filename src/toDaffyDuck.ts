@@ -58,9 +58,9 @@ export function toDaffyDuck(nodes: Node[], edges: Edge[]): DaffyGraph {
     id: e.id,
     source: e.source,
     target: e.target,
-    source_handle: e.sourceHandle,
-    target_handle: e.targetHandle,
-  } as DaffyEdge)))
+    source_handle: e.sourceHandle || undefined,
+    target_handle: e.targetHandle || undefined,
+  } satisfies DaffyEdge)))
 
   if (Object.keys(tools).length > 0) {
     const toolNode: DaffyToolNode = {
