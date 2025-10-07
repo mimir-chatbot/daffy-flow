@@ -1,4 +1,5 @@
 import type { XYPosition } from '@vue-flow/core'
+import type { DaffyNodeType, DaffyToolType, FLOW_TO_DAFFY_NODES } from '../constants'
 
 export interface DaffyNodeAgentSettings {
   api_key: string
@@ -9,11 +10,11 @@ export interface DaffyNodeAgentSettings {
 }
 
 export interface DaffyTool {
-  name: string
+  name: DaffyToolType
   settings: Record<string, any>
 }
 
-export interface DaffyNodeBase<T extends string = string, S extends Record<string, any> = Record<string, any>> {
+export interface DaffyNodeBase<T extends DaffyNodeType = DaffyNodeType, S extends Record<string, any> = Record<string, any>> {
   id: string
   node: T
   settings: S
@@ -25,20 +26,20 @@ interface WithTools {
   tools: DaffyTool[]
 }
 
-export type DaffyAgentNode = DaffyNodeBase<'AgentNode', DaffyNodeAgentSettings> & WithTools
+export type DaffyAgentNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.agent, DaffyNodeAgentSettings> & WithTools
 
-export type DaffyToolNode = DaffyNodeBase<'ToolNode'> & WithTools
+export type DaffyToolNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.tool> & WithTools
 
-export type DaffyRagNode = DaffyNodeBase<'RagNode'>
+export type DaffyRagNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.rag>
 
-export type DaffyPostgresIntrospectionNode = DaffyNodeBase<'PostgresIntrospectionNode'>
+export type DaffyPostgresIntrospectionNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.postgres_introspection>
 
-export type DaffyMSSQLIntrospectionNode = DaffyNodeBase<'MSSQLIntrospectionNode'>
+export type DaffyMSSQLIntrospectionNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.mssql_introspection>
 
 export interface DaffyEdge {
+  id: string
   source: string
   target?: string
-  label?: string
   condition?: Record<string, string>
   source_handle?: string
   target_handle?: string

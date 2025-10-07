@@ -1,4 +1,4 @@
-import { DAFFY_NODES, DAFFY_TOOLS, toDaffyDuck } from '@daffy'
+import { DAFFY_TO_FLOW_NODES, DAFFY_TO_FLOW_TOOLS, FLOW_TO_DAFFY_NODES, FLOW_TO_DAFFY_TOOLS, toDaffyDuck } from '@daffy'
 import { expect, it } from 'vitest'
 
 it('toDaffyDuckEmpty', () => {
@@ -11,25 +11,23 @@ it('toDaffyDuckOnlyAgent', () => {
   expect(toDaffyDuck([
     {
       id: 'START',
-      type: DAFFY_NODES.START,
+      type: DAFFY_TO_FLOW_NODES.StartNode,
       position: {
         x: 1,
         y: 1,
       },
-      data: {},
     },
     {
       id: 'END',
-      type: DAFFY_NODES.END,
+      type: DAFFY_TO_FLOW_NODES.EndNode,
       position: {
         x: 1,
         y: 1,
       },
-      data: {},
     },
     {
       id: 'agent_test',
-      type: DAFFY_NODES.AGENT,
+      type: DAFFY_TO_FLOW_NODES.AgentNode,
       position: {
         x: 1,
         y: 1,
@@ -48,23 +46,23 @@ it('toDaffyDuckOnlyAgent', () => {
   ], [
     {
       id: 'start_agent',
-      source: DAFFY_NODES.START,
+      source: DAFFY_TO_FLOW_NODES.StartNode,
       target: 'agent_test',
-      sourceHandle: DAFFY_NODES.START,
+      sourceHandle: DAFFY_TO_FLOW_NODES.StartNode,
       targetHandle: 'agent',
     },
     {
       id: 'agent_end',
       source: 'agent_test',
-      target: DAFFY_NODES.END,
-      sourceHandle: DAFFY_NODES.END,
+      target: DAFFY_TO_FLOW_NODES.EndNode,
+      sourceHandle: DAFFY_TO_FLOW_NODES.EndNode,
       targetHandle: 'agent',
     },
   ])).toStrictEqual({
     nodes: [
       {
         id: 'agent_test',
-        node: 'AgentNode',
+        node: FLOW_TO_DAFFY_NODES.agent,
         parallel_tool_calling: true,
         position: {
           x: 1,
@@ -82,15 +80,17 @@ it('toDaffyDuckOnlyAgent', () => {
     ],
     edges: [
       {
-        source: DAFFY_NODES.START,
+        id: 'start_agent',
+        source: DAFFY_TO_FLOW_NODES.StartNode,
         target: 'agent_test',
-        source_handle: DAFFY_NODES.START,
+        source_handle: DAFFY_TO_FLOW_NODES.StartNode,
         target_handle: 'agent',
       },
       {
+        id: 'agent_end',
         source: 'agent_test',
-        target: DAFFY_NODES.END,
-        source_handle: DAFFY_NODES.END,
+        target: DAFFY_TO_FLOW_NODES.EndNode,
+        source_handle: DAFFY_TO_FLOW_NODES.EndNode,
         target_handle: 'agent',
       },
     ],
@@ -103,25 +103,23 @@ it('toDaffyDuckRagAgentWithTools', () => {
   expect(toDaffyDuck([
     {
       id: 'START',
-      type: DAFFY_NODES.START,
+      type: DAFFY_TO_FLOW_NODES.StartNode,
       position: {
         x: 1,
         y: 1,
       },
-      data: {},
     },
     {
       id: 'END',
-      type: DAFFY_NODES.END,
+      type: DAFFY_TO_FLOW_NODES.EndNode,
       position: {
         x: 1,
         y: 1,
       },
-      data: {},
     },
     {
       id: 'agent_test',
-      type: DAFFY_NODES.AGENT,
+      type: DAFFY_TO_FLOW_NODES.AgentNode,
       position: {
         x: 1,
         y: 1,
@@ -139,7 +137,7 @@ it('toDaffyDuckRagAgentWithTools', () => {
     },
     {
       id: 'rag',
-      type: DAFFY_NODES.RAG,
+      type: DAFFY_TO_FLOW_NODES.RagNode,
       data: {
         config: {
           collection_name: 'test',
@@ -152,9 +150,9 @@ it('toDaffyDuckRagAgentWithTools', () => {
     },
     {
       id: 'mcp',
-      type: DAFFY_NODES.TOOL,
+      type: DAFFY_TO_FLOW_NODES.ToolNode,
       data: {
-        value: 'mcp',
+        value: DAFFY_TO_FLOW_TOOLS.MCPTool,
         config: {
           websearch: {
             url: 'test',
@@ -170,8 +168,8 @@ it('toDaffyDuckRagAgentWithTools', () => {
   ], [
     {
       id: 'start_agent',
-      source: DAFFY_NODES.START,
-      sourceHandle: DAFFY_NODES.START,
+      source: 'start',
+      sourceHandle: 'start',
       target: 'rag',
       targetHandle: 'rag',
     },
@@ -192,15 +190,15 @@ it('toDaffyDuckRagAgentWithTools', () => {
     {
       id: 'agent_end',
       source: 'agent_test',
-      sourceHandle: DAFFY_NODES.END,
-      target: DAFFY_NODES.END,
+      sourceHandle: 'end',
+      target: 'end',
       targetHandle: 'agent',
     },
   ])).toStrictEqual({
     nodes: [
       {
         id: 'agent_test',
-        node: 'AgentNode',
+        node: FLOW_TO_DAFFY_NODES.agent,
         parallel_tool_calling: true,
         position: {
           x: 1,
@@ -215,7 +213,7 @@ it('toDaffyDuckRagAgentWithTools', () => {
         },
         tools: [
           {
-            name: DAFFY_TOOLS.mcp,
+            name: FLOW_TO_DAFFY_TOOLS.mcp,
             settings: {
               websearch: {
                 url: 'test',
@@ -227,7 +225,7 @@ it('toDaffyDuckRagAgentWithTools', () => {
       },
       {
         id: 'rag',
-        node: 'RagNode',
+        node: FLOW_TO_DAFFY_NODES.rag,
         position: {
           x: 1,
           y: 1,
@@ -247,7 +245,7 @@ it('toDaffyDuckRagAgentWithTools', () => {
         },
         tools: [
           {
-            name: DAFFY_TOOLS.mcp,
+            name: FLOW_TO_DAFFY_TOOLS.mcp,
             settings: {
               websearch: {
                 url: 'test',
@@ -260,31 +258,35 @@ it('toDaffyDuckRagAgentWithTools', () => {
     ],
     edges: [
       {
-        source: DAFFY_NODES.START,
-        target: DAFFY_NODES.RAG,
-        source_handle: DAFFY_NODES.START,
+        id: 'start_agent',
+        source: 'start',
+        target: 'rag',
+        source_handle: 'start',
         target_handle: 'rag',
       },
       {
-        source: DAFFY_NODES.RAG,
+        id: 'rag_agent',
+        source: 'rag',
         target: 'agent_test',
         source_handle: 'rag',
         target_handle: 'agent',
       },
-
       {
+        id: 'agent_end',
         source: 'agent_test',
-        target: DAFFY_NODES.END,
-        source_handle: DAFFY_NODES.END,
+        target: 'end',
+        source_handle: 'end',
         target_handle: 'agent',
       },
       {
+        id: 'tool_node_agent_test',
+        source: 'agent_test',
         condition: {
           tool_node: 'tools_condition',
         },
-        source: 'agent_test',
       },
       {
+        id: 'end_tool_node',
         source: 'tool_node',
         target: 'agent_test',
       },
