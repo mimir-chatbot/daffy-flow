@@ -62,7 +62,7 @@ type DaffyRagNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.rag>;
 type DaffyPostgresIntrospectionNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.postgres_introspection>;
 type DaffyMSSQLIntrospectionNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.mssql_introspection>;
 interface DaffyEdge {
-  id: string;
+  id?: string;
   source: string;
   target?: string;
   condition?: Record<string, string>;

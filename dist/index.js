@@ -60,10 +60,10 @@ function fromDaffyDuck(graph) {
 			}
 		});
 	}
-	edges.push(...graph.edges.map((e) => ({
-		id: e.id,
+	edges.push(...graph.edges.map((e, index) => ({
+		id: e.id || `${e.source}_${e.target}_${index}`,
 		source: e.source,
-		target: e.target,
+		target: e.target || "",
 		sourceHandle: e.source_handle,
 		targetHandle: e.target_handle
 	})));
@@ -114,8 +114,8 @@ function toDaffyDuck(nodes, edges) {
 		id: e.id,
 		source: e.source,
 		target: e.target,
-		source_handle: e.sourceHandle,
-		target_handle: e.targetHandle
+		source_handle: e.sourceHandle || void 0,
+		target_handle: e.targetHandle || void 0
 	})));
 	if (Object.keys(tools).length > 0) {
 		const toolNode = {
