@@ -60,7 +60,7 @@ function fromDaffyDuck(graph) {
 		node.tools.forEach((tool, index) => {
 			const toolType = DAFFY_TO_FLOW_TOOLS[tool.name];
 			nodes.push({
-				id: `tool_node_${toolType}_${index}`,
+				id: `start_tool_node_${toolType}_${index}`,
 				type: DAFFY_TO_FLOW_NODES.ToolNode,
 				position: {
 					x: 0,
@@ -85,7 +85,7 @@ function fromDaffyDuck(graph) {
 	edges.push(...graph.edges.filter((e) => !e.id?.startsWith("tool_node")).map((e, index) => ({
 		id: e.id || `${e.source}_${e.target}_${index}`,
 		source: e.source,
-		target: e.target || "",
+		target: e.target || Object.keys(e.condition || {})[0] || "tool_node",
 		sourceHandle: e.source_handle,
 		targetHandle: e.target_handle
 	})));
@@ -96,11 +96,17 @@ function fromDaffyDuck(graph) {
 }
 
 //#endregion
-//#region src/toDaffyDuck.ts
-function findToolTarget(source, edges) {
-	for (const [index, edge] of edges.entries()) if (source === edge.source) return [index, edge.target];
+//#region src/helpers.ts
+function findToolSource(source, edges) {
+	for (const [index, edge] of edges.entries()) {
+		if (source === edge.target) return [index, edge.source];
+		if (source === edge.source) return [index, edge.target];
+	}
 	return [];
 }
+
+//#endregion
+//#region src/toDaffyDuck.ts
 function toDaffyDuck(nodes, edges) {
 	const daffyNodes = [];
 	const daffyEdges = [];
@@ -108,23 +114,26 @@ function toDaffyDuck(nodes, edges) {
 	for (const node of nodes) {
 		if (node.type === DAFFY_TO_FLOW_NODES.StartNode || node.type === DAFFY_TO_FLOW_NODES.EndNode) continue;
 		if (node.type === DAFFY_TO_FLOW_NODES.ToolNode) {
-			const [index, targetTool] = findToolTarget(node.id, edges);
+			const [index, toolSource] = findToolSource(node.id, edges);
 			const toolType = node.data.value;
-			if (!targetTool || !index || !(toolType in FLOW_TO_DAFFY_TOOLS)) continue;
-			tools[targetTool] = {
+			if (!toolSource || index === void 0 || !(toolType in FLOW_TO_DAFFY_TOOLS)) continue;
+			tools[toolSource] = {
 				name: FLOW_TO_DAFFY_TOOLS[toolType],
 				settings: node.data.config
 			};
 			edges.splice(index, 1);
 		}
-		if (node.type === DAFFY_TO_FLOW_NODES.AgentNode) daffyNodes.push({
-			id: node.id,
-			node: FLOW_TO_DAFFY_NODES.agent,
-			settings: node.data,
-			position: node.position,
-			parallel_tool_calling: node.data.parallel_tool_calling ?? true,
-			tools: []
-		});
+		if (node.type === DAFFY_TO_FLOW_NODES.AgentNode) {
+			const { parallel_tool_calling = true,...settings } = node.data ?? {};
+			daffyNodes.push({
+				id: node.id,
+				node: FLOW_TO_DAFFY_NODES.agent,
+				position: node.position,
+				settings,
+				parallel_tool_calling,
+				tools: []
+			});
+		}
 		if (node.type === DAFFY_TO_FLOW_NODES.RagNode) daffyNodes.push({
 			id: node.id,
 			node: FLOW_TO_DAFFY_NODES.rag,
@@ -140,8 +149,9 @@ function toDaffyDuck(nodes, edges) {
 		target_handle: e.targetHandle || void 0
 	})));
 	if (Object.keys(tools).length > 0) {
+		const toolId = "tool_node";
 		const toolNode = {
-			id: "tool_node",
+			id: toolId,
 			node: FLOW_TO_DAFFY_NODES.tool,
 			parallel_tool_calling: true,
 			position: {
@@ -151,21 +161,23 @@ function toDaffyDuck(nodes, edges) {
 			settings: {},
 			tools: []
 		};
-		for (const target in tools) {
-			toolNode.tools.push(tools[target]);
-			for (const node of daffyNodes) if (node.id === target && node.node === FLOW_TO_DAFFY_NODES.agent) {
-				node.tools.push(tools[target]);
+		for (const source in tools) {
+			toolNode.tools.push(tools[source]);
+			for (const node of daffyNodes) if (node.id === source && node.node === FLOW_TO_DAFFY_NODES.agent) {
+				node.tools.push(tools[source]);
 				break;
 			}
 			daffyNodes.push(toolNode);
 			daffyEdges.push({
-				id: `${toolNode.id}_${target}`,
-				source: target,
-				condition: { tool_node: "tools_condition" }
+				id: `start_${toolId}_${source}`,
+				source,
+				source_handle: "tools",
+				condition: { [toolId]: "tools_condition" }
 			}, {
-				id: `end_${toolNode.id}`,
-				source: "tool_node",
-				target
+				id: `end_${toolId}_${source}`,
+				source: toolId,
+				target: source,
+				target_handle: "tools"
 			});
 		}
 	}

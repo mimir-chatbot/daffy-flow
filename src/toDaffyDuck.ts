@@ -1,14 +1,7 @@
 import type { Edge, Node } from '@vue-flow/core'
 import type { DaffyEdge, DaffyGraph, DaffyNode, DaffyTool, DaffyToolNode } from './models/graph'
 import { DAFFY_TO_FLOW_NODES, FLOW_TO_DAFFY_NODES, FLOW_TO_DAFFY_TOOLS } from './constants'
-
-function findToolTarget(source: string, edges: Edge[]): [index?: number, source?: string] {
-  for (const [index, edge] of edges.entries()) {
-    if (source === edge.source)
-      return [index, edge.target]
-  }
-  return []
-}
+import { findToolSource } from './helpers'
 
 export function toDaffyDuck(nodes: Node[], edges: Edge[]): DaffyGraph {
   const daffyNodes: DaffyNode[] = []
@@ -19,13 +12,13 @@ export function toDaffyDuck(nodes: Node[], edges: Edge[]): DaffyGraph {
     if (node.type === DAFFY_TO_FLOW_NODES.StartNode || node.type === DAFFY_TO_FLOW_NODES.EndNode) continue
 
     if (node.type === DAFFY_TO_FLOW_NODES.ToolNode) {
-      const [index, targetTool] = findToolTarget(node.id, edges)
+      const [index, toolSource] = findToolSource(node.id, edges)
       const toolType = node.data.value as string
-      if (!targetTool || !index || !(toolType in FLOW_TO_DAFFY_TOOLS)) continue
+      if (!toolSource || index === undefined || !(toolType in FLOW_TO_DAFFY_TOOLS)) continue
 
       const daffyToolName = FLOW_TO_DAFFY_TOOLS[toolType as keyof typeof FLOW_TO_DAFFY_TOOLS]
 
-      tools[targetTool] = {
+      tools[toolSource] = {
         name: daffyToolName,
         settings: node.data.config,
       }
@@ -34,12 +27,13 @@ export function toDaffyDuck(nodes: Node[], edges: Edge[]): DaffyGraph {
     }
 
     if (node.type === DAFFY_TO_FLOW_NODES.AgentNode) {
+      const { parallel_tool_calling = true, ...settings } = node.data ?? {}
       daffyNodes.push({
         id: node.id,
         node: FLOW_TO_DAFFY_NODES.agent,
-        settings: node.data,
         position: node.position,
-        parallel_tool_calling: node.data.parallel_tool_calling ?? true,
+        settings,
+        parallel_tool_calling,
         tools: [],
       })
     }
@@ -63,8 +57,10 @@ export function toDaffyDuck(nodes: Node[], edges: Edge[]): DaffyGraph {
   } satisfies DaffyEdge)))
 
   if (Object.keys(tools).length > 0) {
+    const toolId = 'tool_node'
+
     const toolNode: DaffyToolNode = {
-      id: 'tool_node',
+      id: toolId,
       node: FLOW_TO_DAFFY_NODES.tool,
       parallel_tool_calling: true,
       position: {
@@ -75,26 +71,28 @@ export function toDaffyDuck(nodes: Node[], edges: Edge[]): DaffyGraph {
       tools: [],
     }
 
-    for (const target in tools) {
-      toolNode.tools.push(tools[target])
+    for (const source in tools) {
+      toolNode.tools.push(tools[source])
       for (const node of daffyNodes) {
-        if (node.id === target && node.node === FLOW_TO_DAFFY_NODES.agent) {
-          node.tools.push(tools[target])
+        if (node.id === source && node.node === FLOW_TO_DAFFY_NODES.agent) {
+          node.tools.push(tools[source])
           break
         }
       }
 
       daffyNodes.push(toolNode)
       daffyEdges.push({
-        id: `${toolNode.id}_${target}`,
-        source: target,
+        id: `start_${toolId}_${source}`,
+        source,
+        source_handle: 'tools',
         condition: {
-          tool_node: 'tools_condition',
+          [toolId]: 'tools_condition',
         },
       }, {
-        id: `end_${toolNode.id}`,
-        source: 'tool_node',
-        target,
+        id: `end_${toolId}_${source}`,
+        source: toolId,
+        target: source,
+        target_handle: 'tools',
       })
     }
   }

@@ -25,7 +25,7 @@ export function fromDaffyDuck(graph: DaffyGraph): { nodes: Node[], edges: Edge[]
     node.tools.forEach((tool, index) => {
       const toolType = DAFFY_TO_FLOW_TOOLS[tool.name]
       nodes.push({
-        id: `tool_node_${toolType}_${index}`,
+        id: `start_tool_node_${toolType}_${index}`,
         type: DAFFY_TO_FLOW_NODES.ToolNode,
         position: { x: 0, y: 0 },
         data: {
@@ -48,7 +48,7 @@ export function fromDaffyDuck(graph: DaffyGraph): { nodes: Node[], edges: Edge[]
   edges.push(...graph.edges.filter(e => !e.id?.startsWith('tool_node')).map((e, index) => ({
     id: e.id || `${e.source}_${e.target}_${index}`,
     source: e.source,
-    target: e.target || '',
+    target: e.target || Object.keys(e.condition || {})[0] || 'tool_node',
     sourceHandle: e.source_handle,
     targetHandle: e.target_handle,
   } satisfies Edge)))
