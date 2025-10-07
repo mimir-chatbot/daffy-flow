@@ -71,13 +71,11 @@ it('fromDaffyDuckOnlyAgent', () => {
         },
         data: {
           parallel_tool_calling: true,
-          config: {
-            api_key: '',
-            stream: true,
-            system_prompt: '',
-            temperature: 0.1,
-            model: 'openai:gpt-4o',
-          },
+          api_key: '',
+          stream: true,
+          system_prompt: '',
+          temperature: 0.1,
+          model: 'openai:gpt-4o',
         },
       },
     ],
@@ -229,13 +227,11 @@ it('fromDaffyDuckRagAgentWithTools', () => {
           y: 0,
         },
         data: {
-          config: {
-            api_key: '',
-            stream: true,
-            system_prompt: '',
-            temperature: 0.1,
-            model: 'openai:gpt-4o',
-          },
+          api_key: '',
+          stream: true,
+          system_prompt: '',
+          temperature: 0.1,
+          model: 'openai:gpt-4o',
           parallel_tool_calling: true,
         },
       },
@@ -243,9 +239,7 @@ it('fromDaffyDuckRagAgentWithTools', () => {
         id: 'rag',
         type: DAFFY_TO_FLOW_NODES.RagNode,
         data: {
-          config: {
-            collection_name: 'test',
-          },
+          collection_name: 'test',
         },
         position: {
           x: 0,

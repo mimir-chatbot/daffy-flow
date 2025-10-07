@@ -15,7 +15,7 @@ export function fromDaffyDuck(graph: DaffyGraph): { nodes: Node[], edges: Edge[]
       type: DAFFY_TO_FLOW_NODES[daffyNode.node],
       position: daffyNode.position,
       data: {
-        config: daffyNode.settings,
+        ...daffyNode.settings,
         ...('parallel_tool_calling' in daffyNode ? { parallel_tool_calling: daffyNode.parallel_tool_calling } : {}),
       },
     })

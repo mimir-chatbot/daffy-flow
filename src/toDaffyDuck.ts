@@ -37,7 +37,7 @@ export function toDaffyDuck(nodes: Node[], edges: Edge[]): DaffyGraph {
       daffyNodes.push({
         id: node.id,
         node: FLOW_TO_DAFFY_NODES.agent,
-        settings: node.data.config,
+        settings: node.data,
         position: node.position,
         parallel_tool_calling: node.data.parallel_tool_calling ?? true,
         tools: [],
@@ -48,7 +48,7 @@ export function toDaffyDuck(nodes: Node[], edges: Edge[]): DaffyGraph {
       daffyNodes.push({
         id: node.id,
         node: FLOW_TO_DAFFY_NODES.rag,
-        settings: node.data.config,
+        settings: node.data,
         position: node.position,
       })
     }

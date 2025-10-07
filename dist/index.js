@@ -52,7 +52,7 @@ function fromDaffyDuck(graph) {
 		type: DAFFY_TO_FLOW_NODES[daffyNode.node],
 		position: daffyNode.position,
 		data: {
-			config: daffyNode.settings,
+			...daffyNode.settings,
 			..."parallel_tool_calling" in daffyNode ? { parallel_tool_calling: daffyNode.parallel_tool_calling } : {}
 		}
 	});
@@ -120,7 +120,7 @@ function toDaffyDuck(nodes, edges) {
 		if (node.type === DAFFY_TO_FLOW_NODES.AgentNode) daffyNodes.push({
 			id: node.id,
 			node: FLOW_TO_DAFFY_NODES.agent,
-			settings: node.data.config,
+			settings: node.data,
 			position: node.position,
 			parallel_tool_calling: node.data.parallel_tool_calling ?? true,
 			tools: []
@@ -128,7 +128,7 @@ function toDaffyDuck(nodes, edges) {
 		if (node.type === DAFFY_TO_FLOW_NODES.RagNode) daffyNodes.push({
 			id: node.id,
 			node: FLOW_TO_DAFFY_NODES.rag,
-			settings: node.data.config,
+			settings: node.data,
 			position: node.position
 		});
 	}
