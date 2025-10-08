@@ -34,7 +34,7 @@ export type DaffyToolNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.tool> & Wit
 
 export type DaffyRagNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.rag>
 
-export type DaffyPostgresIntrospectionNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.postgres_introspection>
+export type DaffyPostgressIntrospectionNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.postgres_introspection>
 
 export type DaffyMSSQLIntrospectionNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.mssql_introspection>
 
@@ -47,7 +47,7 @@ export interface DaffyEdge {
   target_handle?: string
 }
 
-export type DaffyNode = DaffyAgentNode | DaffyToolNode | DaffyRagNode | DaffyPostgresIntrospectionNode | DaffyMSSQLIntrospectionNode
+export type DaffyNode = DaffyAgentNode | DaffyToolNode | DaffyRagNode | DaffyPostgressIntrospectionNode | DaffyMSSQLIntrospectionNode
 
 export interface DaffyGraph {
   nodes: DaffyNode[]

@@ -4,7 +4,7 @@ export const DAFFY_TO_FLOW_NODES = {
   AgentNode: 'agent',
   RagNode: 'rag',
   ToolNode: 'tool',
-  PostgresIntrospectionNode: 'postgres_introspection',
+  PostgressIntrospectionNode: 'postgres_introspection',
   MSSQLIntrospectionNode: 'mssql_introspection',
 } as const
 
@@ -14,7 +14,7 @@ export const FLOW_TO_DAFFY_NODES = {
   agent: 'AgentNode',
   rag: 'RagNode',
   tool: 'ToolNode',
-  postgres_introspection: 'PostgresIntrospectionNode',
+  postgres_introspection: 'PostgressIntrospectionNode',
   mssql_introspection: 'MSSQLIntrospectionNode',
 } as const
 
