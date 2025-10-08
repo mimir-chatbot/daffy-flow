@@ -167,7 +167,7 @@ it('toDaffyDuckRagAgentWithTools', () => {
       data: {
         value: DAFFY_TO_FLOW_TOOLS.ExcelGeneratorTool,
         config: {
-          url_expiration_seconds: 6000
+          url_expiration_seconds: 6000,
         },
       },
       position: {
@@ -241,7 +241,7 @@ it('toDaffyDuckRagAgentWithTools', () => {
           {
             name: FLOW_TO_DAFFY_TOOLS.excel,
             settings: {
-              url_expiration_seconds: 6000
+              url_expiration_seconds: 6000,
             },
           },
         ],
@@ -281,9 +281,9 @@ it('toDaffyDuckRagAgentWithTools', () => {
           {
             name: FLOW_TO_DAFFY_TOOLS.excel,
             settings: {
-              url_expiration_seconds: 6000
+              url_expiration_seconds: 6000,
             },
-          }
+          },
         ],
       },
     ],
@@ -315,13 +315,13 @@ it('toDaffyDuckRagAgentWithTools', () => {
         condition: {
           tool_node: 'tools_condition',
         },
-        source_handle: "tools"
+        source_handle: 'tools',
       },
       {
         id: 'end_tool_node_agent_test',
         source: 'tool_node',
         target: 'agent_test',
-        target_handle: "tools"
+        target_handle: 'tools',
       },
     ],
   })

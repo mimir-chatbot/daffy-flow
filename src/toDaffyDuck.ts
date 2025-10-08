@@ -18,9 +18,8 @@ export function toDaffyDuck(nodes: Node[], edges: Edge[]): DaffyGraph {
 
       const daffyToolName = FLOW_TO_DAFFY_TOOLS[toolType as keyof typeof FLOW_TO_DAFFY_TOOLS]
 
-      if (!Object.keys(tools).includes(toolSource)) {
+      if (!Object.keys(tools).includes(toolSource))
         tools[toolSource] = []
-      }
 
       tools[toolSource].push({
         name: daffyToolName,

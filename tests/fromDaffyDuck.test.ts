@@ -293,6 +293,6 @@ it('fromDaffyDuckRagAgentWithTools', () => {
         sourceHandle: 'end',
         targetHandle: 'agent',
       },
-      ],
+    ],
   })
 })
