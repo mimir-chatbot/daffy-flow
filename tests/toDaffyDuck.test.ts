@@ -161,6 +161,20 @@ it('toDaffyDuckRagAgentWithTools', () => {
         y: 1,
       },
     },
+    {
+      id: 'excel',
+      type: DAFFY_TO_FLOW_NODES.ToolNode,
+      data: {
+        value: DAFFY_TO_FLOW_TOOLS.ExcelGeneratorTool,
+        config: {
+          url_expiration_seconds: 6000
+        },
+      },
+      position: {
+        x: 1,
+        y: 1,
+      },
+    },
   ], [
     {
       id: 'start_agent',
@@ -178,10 +192,15 @@ it('toDaffyDuckRagAgentWithTools', () => {
     },
     {
       id: 'mcp_agent_test',
-      source: 'mcp',
-      sourceHandle: 'mcp',
-      target: 'agent_test',
-      targetHandle: 'agent',
+      source: 'agent_test',
+      sourceHandle: 'source_agent_tools',
+      target: 'mcp',
+    },
+    {
+      id: 'excel_agent_test',
+      source: 'agent_test',
+      sourceHandle: 'source_agent_tools',
+      target: 'excel',
     },
     {
       id: 'agent_end',
@@ -219,6 +238,12 @@ it('toDaffyDuckRagAgentWithTools', () => {
               },
             },
           },
+          {
+            name: FLOW_TO_DAFFY_TOOLS.excel,
+            settings: {
+              url_expiration_seconds: 6000
+            },
+          },
         ],
       },
       {
@@ -253,6 +278,12 @@ it('toDaffyDuckRagAgentWithTools', () => {
               },
             },
           },
+          {
+            name: FLOW_TO_DAFFY_TOOLS.excel,
+            settings: {
+              url_expiration_seconds: 6000
+            },
+          }
         ],
       },
     ],

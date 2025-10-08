@@ -6,7 +6,7 @@ import { findToolSource } from './helpers'
 export function toDaffyDuck(nodes: Node[], edges: Edge[]): DaffyGraph {
   const daffyNodes: DaffyNode[] = []
   const daffyEdges: DaffyEdge[] = []
-  const tools: Record<string, DaffyTool> = {}
+  const tools: Record<string, DaffyTool[]> = {}
 
   for (const node of nodes) {
     if (node.type === DAFFY_TO_FLOW_NODES.StartNode || node.type === DAFFY_TO_FLOW_NODES.EndNode) continue
@@ -18,10 +18,14 @@ export function toDaffyDuck(nodes: Node[], edges: Edge[]): DaffyGraph {
 
       const daffyToolName = FLOW_TO_DAFFY_TOOLS[toolType as keyof typeof FLOW_TO_DAFFY_TOOLS]
 
-      tools[toolSource] = {
+      if (!Object.keys(tools).includes(toolSource)) {
+        tools[toolSource] = []
+      }
+
+      tools[toolSource].push({
         name: daffyToolName,
         settings: node.data.config,
-      }
+      })
 
       edges.splice(index, 1)
     }
@@ -72,10 +76,10 @@ export function toDaffyDuck(nodes: Node[], edges: Edge[]): DaffyGraph {
     }
 
     for (const source in tools) {
-      toolNode.tools.push(tools[source])
+      toolNode.tools.push(...tools[source])
       for (const node of daffyNodes) {
         if (node.id === source && node.node === FLOW_TO_DAFFY_NODES.agent) {
-          node.tools.push(tools[source])
+          node.tools.push(...tools[source])
           break
         }
       }
