@@ -57,10 +57,10 @@ function fromDaffyDuck(graph) {
 		}
 	});
 	graph.nodes.filter((n) => n.node === "AgentNode").forEach((node) => {
-		node.tools.forEach((tool, index) => {
+		node.tools.forEach((tool) => {
 			const toolType = DAFFY_TO_FLOW_TOOLS[tool.name];
 			nodes.push({
-				id: `start_tool_node_${toolType}_${index}`,
+				id: tool.id,
 				type: DAFFY_TO_FLOW_NODES.ToolNode,
 				position: {
 					x: 0,
@@ -73,11 +73,10 @@ function fromDaffyDuck(graph) {
 			});
 		});
 		edges.push(...node.tools.map((tool, index) => {
-			const toolType = DAFFY_TO_FLOW_TOOLS[tool.name];
 			return {
-				id: `end_tool_node_${toolType}_${index}`,
+				id: `tool_node_${DAFFY_TO_FLOW_TOOLS[tool.name]}_${index}`,
 				source: node.id,
-				target: `start_tool_node_${toolType}_${index}`,
+				target: tool.id,
 				sourceHandle: "source-agents-tools"
 			};
 		}));
@@ -120,6 +119,8 @@ function toDaffyDuck(nodes, edges) {
 			const daffyToolName = FLOW_TO_DAFFY_TOOLS[toolType];
 			if (!Object.keys(tools).includes(toolSource)) tools[toolSource] = [];
 			tools[toolSource].push({
+				id: node.id,
+				position: node.position,
 				name: daffyToolName,
 				settings: node.data.config
 			});

@@ -22,6 +22,8 @@ export function toDaffyDuck(nodes: Node[], edges: Edge[]): DaffyGraph {
         tools[toolSource] = []
 
       tools[toolSource].push({
+        id: node.id,
+        position: node.position,
         name: daffyToolName,
         settings: node.data.config,
       })

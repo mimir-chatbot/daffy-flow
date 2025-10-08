@@ -228,6 +228,8 @@ it('toDaffyDuckRagAgentWithTools', () => {
         },
         tools: [
           {
+            id: 'mcp',
+            position: { x: 1, y: 1 },
             name: FLOW_TO_DAFFY_TOOLS.mcp,
             settings: {
               servers: {
@@ -239,6 +241,8 @@ it('toDaffyDuckRagAgentWithTools', () => {
             },
           },
           {
+            id: 'excel',
+            position: { x: 1, y: 1 },
             name: FLOW_TO_DAFFY_TOOLS.excel,
             settings: {
               url_expiration_seconds: 6000,
@@ -268,6 +272,8 @@ it('toDaffyDuckRagAgentWithTools', () => {
         },
         tools: [
           {
+            id: 'mcp',
+            position: { x: 1, y: 1 },
             name: FLOW_TO_DAFFY_TOOLS.mcp,
             settings: {
               servers: {
@@ -279,6 +285,8 @@ it('toDaffyDuckRagAgentWithTools', () => {
             },
           },
           {
+            id: 'excel',
+            position: { x: 1, y: 1 },
             name: FLOW_TO_DAFFY_TOOLS.excel,
             settings: {
               url_expiration_seconds: 6000,

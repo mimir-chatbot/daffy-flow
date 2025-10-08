@@ -120,6 +120,8 @@ it('fromDaffyDuckRagAgentWithTools', () => {
         },
         tools: [
           {
+            id: 'mcp_tool',
+            position: { x: 0, y: 0 },
             name: FLOW_TO_DAFFY_TOOLS.mcp,
             settings: {
               servers: {
@@ -154,6 +156,11 @@ it('fromDaffyDuckRagAgentWithTools', () => {
         },
         tools: [
           {
+            id: 'mcp_tool',
+            position: {
+              x: 0,
+              y: 0,
+            },
             name: FLOW_TO_DAFFY_TOOLS.mcp,
             settings: {
               servers: {
@@ -247,7 +254,7 @@ it('fromDaffyDuckRagAgentWithTools', () => {
         },
       },
       {
-        id: 'start_tool_node_mcp_0',
+        id: 'mcp_tool',
         type: DAFFY_TO_FLOW_NODES.ToolNode,
         data: {
           value: DAFFY_TO_FLOW_TOOLS.MCPTool,
@@ -268,9 +275,9 @@ it('fromDaffyDuckRagAgentWithTools', () => {
     ],
     edges: [
       {
-        id: 'end_tool_node_mcp_0',
+        id: 'tool_node_mcp_0',
         source: 'agent_test',
-        target: 'start_tool_node_mcp_0',
+        target: 'mcp_tool',
         sourceHandle: 'source-agents-tools',
       }, {
         id: 'start_agent',
