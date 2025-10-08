@@ -39,13 +39,13 @@ export function fromDaffyDuck(graph: DaffyGraph): { nodes: Node[], edges: Edge[]
       return {
         id: `end_tool_node_${toolType}_${index}`,
         source: node.id,
-        target: `tool_node_${toolType}_${index}`,
-        sourceHandle: 'tools',
+        target: `start_tool_node_${toolType}_${index}`,
+        sourceHandle: 'source-agents-tools',
       } satisfies Edge
     }))
   })
 
-  edges.push(...graph.edges.filter(e => !e.id?.startsWith('tool_node')).map((e, index) => ({
+  edges.push(...graph.edges.filter(e => !e.source.startsWith('tool_node') && !Object.keys(e.condition || {}).includes('tool_node')).map((e, index) => ({
     id: e.id || `${e.source}_${e.target}_${index}`,
     source: e.source,
     target: e.target || Object.keys(e.condition || {})[0] || 'tool_node',

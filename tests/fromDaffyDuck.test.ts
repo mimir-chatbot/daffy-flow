@@ -247,7 +247,7 @@ it('fromDaffyDuckRagAgentWithTools', () => {
         },
       },
       {
-        id: 'tool_node_mcp_0',
+        id: 'start_tool_node_mcp_0',
         type: DAFFY_TO_FLOW_NODES.ToolNode,
         data: {
           value: DAFFY_TO_FLOW_TOOLS.MCPTool,
@@ -270,8 +270,8 @@ it('fromDaffyDuckRagAgentWithTools', () => {
       {
         id: 'end_tool_node_mcp_0',
         source: 'agent_test',
-        target: 'tool_node_mcp_0',
-        sourceHandle: 'tools',
+        target: 'start_tool_node_mcp_0',
+        sourceHandle: 'source-agents-tools',
       }, {
         id: 'start_agent',
         source: 'start',
@@ -293,12 +293,6 @@ it('fromDaffyDuckRagAgentWithTools', () => {
         sourceHandle: 'end',
         targetHandle: 'agent',
       },
-      {
-        id: 'end_tool_node',
-        source: 'tool_node',
-        target: 'agent_test',
-        sourceHandle: 'tools',
-        targetHandle: 'agent',
-      }],
+      ],
   })
 })

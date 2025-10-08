@@ -101,159 +101,156 @@ it('toDaffyDuckRagAgentWithTools', () => {
   expect(toDaffyDuck([
     {
       id: 'START',
-      type: 'start',
+      type: DAFFY_TO_FLOW_NODES.StartNode,
       position: {
-        x: -500,
-        y: 0,
+        x: 1,
+        y: 1,
       },
     },
     {
       id: 'END',
-      type: 'end',
+      type: DAFFY_TO_FLOW_NODES.EndNode,
       position: {
-        x: 500,
-        y: 0,
+        x: 1,
+        y: 1,
       },
     },
     {
-      id: 'rag_node',
-      type: 'rag',
+      id: 'agent_test',
+      type: DAFFY_TO_FLOW_NODES.AgentNode,
       position: {
-        x: 0,
-        y: 0,
+        x: 1,
+        y: 1,
       },
       data: {
-        embedder_api_key: '',
-        host: 'qdrant',
-        port: 6333,
-        collection_name: 'agente_amministrativo',
-        score_threshold: 0.4,
-        limit: 10,
-      },
-    },
-    {
-      id: 'node_agent',
-      type: 'agent',
-      position: {
-        x: 0,
-        y: 0,
-      },
-      data: {
+        parallel_tool_calling: true,
         api_key: '',
         stream: true,
         system_prompt: '',
         temperature: 0.1,
-        model: 'openai:gpt-4.1',
-        parallel_tool_calling: true,
+        model: 'openai:gpt-4o',
       },
     },
     {
-      id: 'tool_node_excel_0',
-      type: 'tool',
-      position: {
-        x: 0,
-        y: 0,
-      },
+      id: 'rag',
+      type: DAFFY_TO_FLOW_NODES.RagNode,
       data: {
-        value: 'excel',
+        collection_name: 'test',
+      },
+      position: {
+        x: 1,
+        y: 1,
+      },
+    },
+    {
+      id: 'mcp',
+      type: DAFFY_TO_FLOW_NODES.ToolNode,
+      data: {
+        value: DAFFY_TO_FLOW_TOOLS.MCPTool,
         config: {
-          s3_access_key_id: '',
-          s3_secret_access_key: '',
-          s3_bucket_name: '',
-          s3_endpoint_url: '',
+          servers: {
+            websearch: {
+              url: 'test',
+              transport: 'sse',
+            },
+          },
         },
+      },
+      position: {
+        x: 1,
+        y: 1,
       },
     },
   ], [
     {
-      id: 'end_tool_node_node_agent',
-      source: 'node_agent',
-      target: 'tool_node_excel_0',
-      sourceHandle: 'tools',
+      id: 'start_agent',
+      source: 'start',
+      sourceHandle: 'start',
+      target: 'rag',
+      targetHandle: 'rag',
     },
     {
-      id: 'START_rag_node_0',
-      source: 'START',
-      target: 'rag_node',
+      id: 'rag_agent',
+      source: 'rag',
+      sourceHandle: 'rag',
+      target: 'agent_test',
+      targetHandle: 'agent',
     },
     {
-      id: 'rag_node_node_agent_1',
-      source: 'rag_node',
-      target: 'node_agent',
+      id: 'mcp_agent_test',
+      source: 'mcp',
+      sourceHandle: 'mcp',
+      target: 'agent_test',
+      targetHandle: 'agent',
     },
     {
-      id: 'node_agent_END_2',
-      source: 'node_agent',
-      target: 'END',
-    },
-    {
-      id: 'start_tool_node_node_agent',
-      source: 'tool_node_excel_0',
-      target: 'node_agent',
-      targetHandle: 'tools',
+      id: 'agent_end',
+      source: 'agent_test',
+      sourceHandle: 'end',
+      target: 'end',
+      targetHandle: 'agent',
     },
   ])).toStrictEqual({
     nodes: [
       {
-        id: 'rag_node',
-        node: 'RagNode',
-        settings: {
-          embedder_api_key: '',
-          host: 'qdrant',
-          port: 6333,
-          collection_name: 'agente_amministrativo',
-          score_threshold: 0.4,
-          limit: 10,
-        },
+        id: 'agent_test',
+        node: FLOW_TO_DAFFY_NODES.agent,
+        parallel_tool_calling: true,
         position: {
-          x: 0,
-          y: 0,
+          x: 1,
+          y: 1,
         },
-      },
-      {
-        id: 'node_agent',
-        node: 'AgentNode',
         settings: {
           api_key: '',
           stream: true,
           system_prompt: '',
           temperature: 0.1,
-          model: 'openai:gpt-4.1',
+          model: 'openai:gpt-4o',
         },
-        position: {
-          x: 0,
-          y: 0,
-        },
-        parallel_tool_calling: true,
         tools: [
           {
-            name: 'ExcelGeneratorTool',
+            name: FLOW_TO_DAFFY_TOOLS.mcp,
             settings: {
-              s3_access_key_id: '',
-              s3_secret_access_key: '',
-              s3_bucket_name: '',
-              s3_endpoint_url: '',
+              servers: {
+                websearch: {
+                  url: 'test',
+                  transport: 'sse',
+                },
+              },
             },
           },
         ],
       },
       {
+        id: 'rag',
+        node: FLOW_TO_DAFFY_NODES.rag,
+        position: {
+          x: 1,
+          y: 1,
+        },
+        settings: {
+          collection_name: 'test',
+        },
+      },
+      {
         id: 'tool_node',
         node: 'ToolNode',
         settings: {},
+        parallel_tool_calling: true,
         position: {
           x: 0,
           y: 0,
         },
-        parallel_tool_calling: true,
         tools: [
           {
-            name: 'ExcelGeneratorTool',
+            name: FLOW_TO_DAFFY_TOOLS.mcp,
             settings: {
-              s3_access_key_id: '',
-              s3_secret_access_key: '',
-              s3_bucket_name: '',
-              s3_endpoint_url: '',
+              servers: {
+                websearch: {
+                  url: 'test',
+                  transport: 'sse',
+                },
+              },
             },
           },
         ],
@@ -261,48 +258,39 @@ it('toDaffyDuckRagAgentWithTools', () => {
     ],
     edges: [
       {
-        id: 'start_tool_node_node_agent',
-        source: 'node_agent',
-        target: 'tool_node_excel_0',
-        source_handle: 'tools',
-        target_handle: undefined,
+        id: 'start_agent',
+        source: 'start',
+        target: 'rag',
+        source_handle: 'start',
+        target_handle: 'rag',
       },
       {
-        id: 'START_rag_node_0',
-        source: 'START',
-        target: 'rag_node',
-        source_handle: undefined,
-        target_handle: undefined,
+        id: 'rag_agent',
+        source: 'rag',
+        target: 'agent_test',
+        source_handle: 'rag',
+        target_handle: 'agent',
       },
       {
-        id: 'rag_node_node_agent_1',
-        source: 'rag_node',
-        target: 'node_agent',
-        source_handle: undefined,
-        target_handle: undefined,
+        id: 'agent_end',
+        source: 'agent_test',
+        target: 'end',
+        source_handle: 'end',
+        target_handle: 'agent',
       },
       {
-        id: 'node_agent_END_2',
-        source: 'node_agent',
-        target: 'END',
-        source_handle: undefined,
-        target_handle: undefined,
-      },
-      {
-        id: 'start_tool_node_node_agent',
-        source: 'node_agent',
+        id: 'start_tool_node_agent_test',
+        source: 'agent_test',
         condition: {
           tool_node: 'tools_condition',
         },
-        source_handle: 'tools',
-        target_handle: undefined,
+        source_handle: "tools"
       },
       {
-        id: 'end_tool_node_node_agent',
-        source: 'tool_node_excel_0',
-        target: 'node_agent',
-        source_handle: undefined,
-        target_handle: 'tools',
+        id: 'end_tool_node_agent_test',
+        source: 'tool_node',
+        target: 'agent_test',
+        target_handle: "tools"
       },
     ],
   })
