@@ -117,10 +117,12 @@ function toDaffyDuck(nodes, edges) {
 			const [index, toolSource] = findToolSource(node.id, edges);
 			const toolType = node.data.value;
 			if (!toolSource || index === void 0 || !(toolType in FLOW_TO_DAFFY_TOOLS)) continue;
-			tools[toolSource] = {
-				name: FLOW_TO_DAFFY_TOOLS[toolType],
+			const daffyToolName = FLOW_TO_DAFFY_TOOLS[toolType];
+			if (!Object.keys(tools).includes(toolSource)) tools[toolSource] = [];
+			tools[toolSource].push({
+				name: daffyToolName,
 				settings: node.data.config
-			};
+			});
 			edges.splice(index, 1);
 		}
 		if (node.type === DAFFY_TO_FLOW_NODES.AgentNode) {
@@ -162,9 +164,9 @@ function toDaffyDuck(nodes, edges) {
 			tools: []
 		};
 		for (const source in tools) {
-			toolNode.tools.push(tools[source]);
+			toolNode.tools.push(...tools[source]);
 			for (const node of daffyNodes) if (node.id === source && node.node === FLOW_TO_DAFFY_NODES.agent) {
-				node.tools.push(tools[source]);
+				node.tools.push(...tools[source]);
 				break;
 			}
 			daffyNodes.push(toolNode);
