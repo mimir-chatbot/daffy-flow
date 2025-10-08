@@ -27,7 +27,7 @@ export function fromDaffyDuck(graph: DaffyGraph): { nodes: Node[], edges: Edge[]
       nodes.push({
         id: tool.id,
         type: DAFFY_TO_FLOW_NODES.ToolNode,
-        position: { x: 0, y: 0 },
+        position: tool.position,
         data: {
           value: toolType,
           config: tool.settings,
