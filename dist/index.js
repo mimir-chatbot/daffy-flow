@@ -60,9 +60,12 @@ function fromDaffyDuck(graph) {
 		node.tools.forEach((tool) => {
 			const toolType = DAFFY_TO_FLOW_TOOLS[tool.name];
 			nodes.push({
-				id: tool.id,
+				id: tool.id || `tool_node_${toolType}_${node.id}`,
 				type: DAFFY_TO_FLOW_NODES.ToolNode,
-				position: tool.position,
+				position: tool.position || {
+					x: 0,
+					y: 0
+				},
 				data: {
 					value: toolType,
 					config: tool.settings
@@ -70,10 +73,11 @@ function fromDaffyDuck(graph) {
 			});
 		});
 		edges.push(...node.tools.map((tool, index) => {
+			const toolType = DAFFY_TO_FLOW_TOOLS[tool.name];
 			return {
-				id: `tool_node_${DAFFY_TO_FLOW_TOOLS[tool.name]}_${index}`,
+				id: `tool_node_${toolType}_${index}`,
 				source: node.id,
-				target: tool.id,
+				target: tool.id || `tool_node_${toolType}_${node.id}`,
 				sourceHandle: "source-agents-tools"
 			};
 		}));

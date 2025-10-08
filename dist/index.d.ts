@@ -43,9 +43,9 @@ interface DaffyNodeAgentSettings {
   model: string;
 }
 interface DaffyTool {
-  id: string;
+  id?: string;
   name: DaffyToolType;
-  position: XYPosition;
+  position?: XYPosition;
   settings: Record<string, any>;
 }
 interface DaffyNodeBase<T extends DaffyNodeType = DaffyNodeType, S extends Record<string, any> = Record<string, any>> {

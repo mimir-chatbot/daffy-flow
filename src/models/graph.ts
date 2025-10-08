@@ -10,9 +10,9 @@ export interface DaffyNodeAgentSettings {
 }
 
 export interface DaffyTool {
-  id: string
+  id?: string
   name: DaffyToolType
-  position: XYPosition
+  position?: XYPosition
   settings: Record<string, any>
 }
 
