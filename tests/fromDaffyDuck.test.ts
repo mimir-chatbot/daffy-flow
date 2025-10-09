@@ -4,8 +4,8 @@ import { expect, it } from 'vitest'
 it('fromDaffyDuckEmpty', () => {
   expect(fromDaffyDuck({ nodes: [], edges: [] })).toEqual({
     nodes: [
-      { id: 'START', type: 'start', position: { x: -500, y: 0 } },
-      { id: 'END', type: 'end', position: { x: 500, y: 0 } },
+      { id: 'START', type: 'start', position: { x: -500, y: 0 }, deletable: false, draggable: false },
+      { id: 'END', type: 'end', position: { x: 500, y: 0 }, deletable: false, draggable: false },
     ],
     edges: [],
   })
@@ -55,11 +55,15 @@ it('fromDaffyDuckOnlyAgent', () => {
       {
         id: 'START',
         type: 'start',
+        deletable: false,
+        draggable: false,
         position: { x: -500, y: 0 },
       },
       {
         id: 'END',
         type: 'end',
+        deletable: false,
+        draggable: false,
         position: { x: 500, y: 0 },
       },
       {
@@ -219,11 +223,15 @@ it('fromDaffyDuckRagAgentWithTools', () => {
       {
         id: 'START',
         type: 'start',
+        deletable: false,
+        draggable: false,
         position: { x: -500, y: 0 },
       },
       {
         id: 'END',
         type: 'end',
+        deletable: false,
+        draggable: false,
         position: { x: 500, y: 0 },
       },
       {
