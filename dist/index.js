@@ -1,7 +1,5 @@
 //#region src/constants.ts
 const DAFFY_TO_FLOW_NODES = {
-	StartNode: "start",
-	EndNode: "end",
 	AgentNode: "agent",
 	RagNode: "rag",
 	ToolNode: "tool",
@@ -9,8 +7,6 @@ const DAFFY_TO_FLOW_NODES = {
 	MSSQLIntrospectionNode: "mssql_introspection"
 };
 const FLOW_TO_DAFFY_NODES = {
-	start: "StartNode",
-	end: "EndNode",
 	agent: "AgentNode",
 	rag: "RagNode",
 	tool: "ToolNode",
@@ -33,18 +29,22 @@ const DAFFY_TO_FLOW_TOOLS = {
 function fromDaffyDuck(graph) {
 	const nodes = [{
 		id: "START",
-		type: DAFFY_TO_FLOW_NODES.StartNode,
+		type: "start",
 		position: {
 			x: -500,
 			y: 0
-		}
+		},
+		deletable: false,
+		draggable: false
 	}, {
 		id: "END",
-		type: DAFFY_TO_FLOW_NODES.EndNode,
+		type: "end",
 		position: {
 			x: 500,
 			y: 0
-		}
+		},
+		deletable: false,
+		draggable: false
 	}];
 	const edges = [];
 	for (const daffyNode of graph.nodes.filter((n) => n.node !== "ToolNode")) nodes.push({
@@ -112,8 +112,9 @@ function toDaffyDuck(nodes, edges) {
 	const daffyEdges = [];
 	const tools = {};
 	for (const node of nodes) {
-		if (node.type === DAFFY_TO_FLOW_NODES.StartNode || node.type === DAFFY_TO_FLOW_NODES.EndNode) continue;
-		if (node.type === DAFFY_TO_FLOW_NODES.ToolNode) {
+		if (node.type === "start" || node.type === "end") continue;
+		const nodeType = FLOW_TO_DAFFY_NODES[node.type];
+		if (nodeType === "ToolNode") {
 			const [index, toolSource] = findToolSource(node.id, edges);
 			const toolType = node.data.value;
 			if (!toolSource || index === void 0 || !(toolType in FLOW_TO_DAFFY_TOOLS)) continue;
@@ -126,8 +127,9 @@ function toDaffyDuck(nodes, edges) {
 				settings: node.data.config
 			});
 			edges.splice(index, 1);
+			continue;
 		}
-		if (node.type === DAFFY_TO_FLOW_NODES.AgentNode) {
+		if (nodeType === "AgentNode") {
 			const { parallel_tool_calling = true,...settings } = node.data ?? {};
 			daffyNodes.push({
 				id: node.id,
@@ -137,10 +139,11 @@ function toDaffyDuck(nodes, edges) {
 				parallel_tool_calling,
 				tools: []
 			});
+			continue;
 		}
-		if (node.type === DAFFY_TO_FLOW_NODES.RagNode) daffyNodes.push({
+		daffyNodes.push({
 			id: node.id,
-			node: FLOW_TO_DAFFY_NODES.rag,
+			node: nodeType,
 			settings: node.data,
 			position: node.position
 		});

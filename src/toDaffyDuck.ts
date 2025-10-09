@@ -1,6 +1,6 @@
 import type { Edge, Node } from '@vue-flow/core'
 import type { DaffyEdge, DaffyGraph, DaffyNode, DaffyTool, DaffyToolNode } from './models/graph'
-import { DAFFY_TO_FLOW_NODES, FLOW_TO_DAFFY_NODES, FLOW_TO_DAFFY_TOOLS } from './constants'
+import { FLOW_TO_DAFFY_NODES, FLOW_TO_DAFFY_TOOLS } from './constants'
 import { findToolSource } from './helpers'
 
 export function toDaffyDuck(nodes: Node[], edges: Edge[]): DaffyGraph {
@@ -9,9 +9,11 @@ export function toDaffyDuck(nodes: Node[], edges: Edge[]): DaffyGraph {
   const tools: Record<string, DaffyTool[]> = {}
 
   for (const node of nodes) {
-    if (node.type === DAFFY_TO_FLOW_NODES.StartNode || node.type === DAFFY_TO_FLOW_NODES.EndNode) continue
+    if (node.type === 'start' || node.type === 'end') continue
 
-    if (node.type === DAFFY_TO_FLOW_NODES.ToolNode) {
+    const nodeType = FLOW_TO_DAFFY_NODES[node.type as keyof typeof FLOW_TO_DAFFY_NODES]
+
+    if (nodeType === 'ToolNode') {
       const [index, toolSource] = findToolSource(node.id, edges)
       const toolType = node.data.value as string
       if (!toolSource || index === undefined || !(toolType in FLOW_TO_DAFFY_TOOLS)) continue
@@ -29,9 +31,10 @@ export function toDaffyDuck(nodes: Node[], edges: Edge[]): DaffyGraph {
       })
 
       edges.splice(index, 1)
+      continue
     }
 
-    if (node.type === DAFFY_TO_FLOW_NODES.AgentNode) {
+    if (nodeType === 'AgentNode') {
       const { parallel_tool_calling = true, ...settings } = node.data ?? {}
       daffyNodes.push({
         id: node.id,
@@ -41,16 +44,15 @@ export function toDaffyDuck(nodes: Node[], edges: Edge[]): DaffyGraph {
         parallel_tool_calling,
         tools: [],
       })
+      continue
     }
 
-    if (node.type === DAFFY_TO_FLOW_NODES.RagNode) {
-      daffyNodes.push({
-        id: node.id,
-        node: FLOW_TO_DAFFY_NODES.rag,
-        settings: node.data,
-        position: node.position,
-      })
-    }
+    daffyNodes.push({
+      id: node.id,
+      node: nodeType,
+      settings: node.data,
+      position: node.position,
+    })
   }
 
   daffyEdges.push(...edges.map(e => ({

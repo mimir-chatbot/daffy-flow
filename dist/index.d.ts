@@ -2,8 +2,6 @@ import { Edge, Node, XYPosition } from "@vue-flow/core";
 
 //#region src/constants.d.ts
 declare const DAFFY_TO_FLOW_NODES: {
-  readonly StartNode: "start";
-  readonly EndNode: "end";
   readonly AgentNode: "agent";
   readonly RagNode: "rag";
   readonly ToolNode: "tool";
@@ -11,8 +9,6 @@ declare const DAFFY_TO_FLOW_NODES: {
   readonly MSSQLIntrospectionNode: "mssql_introspection";
 };
 declare const FLOW_TO_DAFFY_NODES: {
-  readonly start: "StartNode";
-  readonly end: "EndNode";
   readonly agent: "AgentNode";
   readonly rag: "RagNode";
   readonly tool: "ToolNode";

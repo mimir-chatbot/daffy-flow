@@ -218,12 +218,12 @@ it('fromDaffyDuckRagAgentWithTools', () => {
     nodes: [
       {
         id: 'START',
-        type: DAFFY_TO_FLOW_NODES.StartNode,
+        type: 'start',
         position: { x: -500, y: 0 },
       },
       {
         id: 'END',
-        type: DAFFY_TO_FLOW_NODES.EndNode,
+        type: 'end',
         position: { x: 500, y: 0 },
       },
       {

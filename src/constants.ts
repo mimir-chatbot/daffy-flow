@@ -1,6 +1,4 @@
 export const DAFFY_TO_FLOW_NODES = {
-  StartNode: 'start',
-  EndNode: 'end',
   AgentNode: 'agent',
   RagNode: 'rag',
   ToolNode: 'tool',
@@ -9,8 +7,6 @@ export const DAFFY_TO_FLOW_NODES = {
 } as const
 
 export const FLOW_TO_DAFFY_NODES = {
-  start: 'StartNode',
-  end: 'EndNode',
   agent: 'AgentNode',
   rag: 'RagNode',
   tool: 'ToolNode',

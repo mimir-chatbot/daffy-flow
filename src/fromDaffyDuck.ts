@@ -4,8 +4,8 @@ import { DAFFY_TO_FLOW_NODES, DAFFY_TO_FLOW_TOOLS } from './constants'
 
 export function fromDaffyDuck(graph: DaffyGraph): { nodes: Node[], edges: Edge[] } {
   const nodes: Node[] = [
-    { id: 'START', type: DAFFY_TO_FLOW_NODES.StartNode, position: { x: -500, y: 0 } },
-    { id: 'END', type: DAFFY_TO_FLOW_NODES.EndNode, position: { x: 500, y: 0 } },
+    { id: 'START', type: 'start', position: { x: -500, y: 0 }, deletable: false, draggable: false },
+    { id: 'END', type: 'end', position: { x: 500, y: 0 }, deletable: false, draggable: false },
   ]
   const edges: Edge[] = []
 

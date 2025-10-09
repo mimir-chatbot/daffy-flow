@@ -11,7 +11,7 @@ it('toDaffyDuckOnlyAgent', () => {
   expect(toDaffyDuck([
     {
       id: 'START',
-      type: DAFFY_TO_FLOW_NODES.StartNode,
+      type: 'start',
       position: {
         x: 1,
         y: 1,
@@ -19,7 +19,7 @@ it('toDaffyDuckOnlyAgent', () => {
     },
     {
       id: 'END',
-      type: DAFFY_TO_FLOW_NODES.EndNode,
+      type: 'end',
       position: {
         x: 1,
         y: 1,
@@ -44,16 +44,16 @@ it('toDaffyDuckOnlyAgent', () => {
   ], [
     {
       id: 'start_agent',
-      source: DAFFY_TO_FLOW_NODES.StartNode,
+      source: 'start',
       target: 'agent_test',
-      sourceHandle: DAFFY_TO_FLOW_NODES.StartNode,
+      sourceHandle: 'start',
       targetHandle: 'agent',
     },
     {
       id: 'agent_end',
       source: 'agent_test',
-      target: DAFFY_TO_FLOW_NODES.EndNode,
-      sourceHandle: DAFFY_TO_FLOW_NODES.EndNode,
+      target: 'end',
+      sourceHandle: 'end',
       targetHandle: 'agent',
     },
   ])).toStrictEqual({
@@ -79,16 +79,16 @@ it('toDaffyDuckOnlyAgent', () => {
     edges: [
       {
         id: 'start_agent',
-        source: DAFFY_TO_FLOW_NODES.StartNode,
+        source: 'start',
         target: 'agent_test',
-        source_handle: DAFFY_TO_FLOW_NODES.StartNode,
+        source_handle: 'start',
         target_handle: 'agent',
       },
       {
         id: 'agent_end',
         source: 'agent_test',
-        target: DAFFY_TO_FLOW_NODES.EndNode,
-        source_handle: DAFFY_TO_FLOW_NODES.EndNode,
+        target: 'end',
+        source_handle: 'end',
         target_handle: 'agent',
       },
     ],
@@ -101,7 +101,7 @@ it('toDaffyDuckRagAgentWithTools', () => {
   expect(toDaffyDuck([
     {
       id: 'START',
-      type: DAFFY_TO_FLOW_NODES.StartNode,
+      type: 'start',
       position: {
         x: 1,
         y: 1,
@@ -109,7 +109,7 @@ it('toDaffyDuckRagAgentWithTools', () => {
     },
     {
       id: 'END',
-      type: DAFFY_TO_FLOW_NODES.EndNode,
+      type: 'end',
       position: {
         x: 1,
         y: 1,
