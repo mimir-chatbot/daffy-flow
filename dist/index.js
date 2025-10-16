@@ -34,8 +34,7 @@ function fromDaffyDuck(graph) {
 			x: -500,
 			y: 0
 		},
-		deletable: false,
-		draggable: false
+		deletable: false
 	}, {
 		id: "END",
 		type: "end",
@@ -43,8 +42,7 @@ function fromDaffyDuck(graph) {
 			x: 500,
 			y: 0
 		},
-		deletable: false,
-		draggable: false
+		deletable: false
 	}];
 	const edges = [];
 	for (const daffyNode of graph.nodes.filter((n) => n.node !== "ToolNode")) nodes.push({
