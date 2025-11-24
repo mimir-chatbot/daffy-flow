@@ -19,11 +19,13 @@ declare const FLOW_TO_DAFFY_TOOLS: {
   readonly mcp: "MCPTool";
   readonly excel: "ExcelGeneratorTool";
   readonly postgres: "PostgressTool";
+  readonly metadata: "SaveMetadataTool";
 };
 declare const DAFFY_TO_FLOW_TOOLS: {
   readonly MCPTool: "mcp";
   readonly ExcelGeneratorTool: "excel";
   readonly PostgressTool: "postgres";
+  readonly SaveMetadataTool: "metadata";
 };
 type FlowNodeType = keyof typeof FLOW_TO_DAFFY_NODES;
 type FlowToolType = keyof typeof FLOW_TO_DAFFY_TOOLS;

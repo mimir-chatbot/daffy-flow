@@ -16,12 +16,14 @@ const FLOW_TO_DAFFY_NODES = {
 const FLOW_TO_DAFFY_TOOLS = {
 	mcp: "MCPTool",
 	excel: "ExcelGeneratorTool",
-	postgres: "PostgressTool"
+	postgres: "PostgressTool",
+	metadata: "SaveMetadataTool"
 };
 const DAFFY_TO_FLOW_TOOLS = {
 	MCPTool: "mcp",
 	ExcelGeneratorTool: "excel",
-	PostgressTool: "postgres"
+	PostgressTool: "postgres",
+	SaveMetadataTool: "metadata"
 };
 
 //#endregion
