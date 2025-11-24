@@ -18,12 +18,14 @@ export const FLOW_TO_DAFFY_TOOLS = {
   mcp: 'MCPTool',
   excel: 'ExcelGeneratorTool',
   postgres: 'PostgressTool',
+  metadata: 'SaveMetadataTool',
 } as const
 
 export const DAFFY_TO_FLOW_TOOLS = {
   MCPTool: 'mcp',
   ExcelGeneratorTool: 'excel',
   PostgressTool: 'postgres',
+  SaveMetadataTool: 'metadata',
 } as const
 
 export type FlowNodeType = keyof typeof FLOW_TO_DAFFY_NODES
