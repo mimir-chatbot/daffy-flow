@@ -20,12 +20,14 @@ declare const FLOW_TO_DAFFY_TOOLS: {
   readonly excel: "ExcelGeneratorTool";
   readonly postgres: "PostgressTool";
   readonly metadata: "SaveMetadataTool";
+  readonly whatsapp_send_message: "WhatsappSendMessageTool";
 };
 declare const DAFFY_TO_FLOW_TOOLS: {
   readonly MCPTool: "mcp";
   readonly ExcelGeneratorTool: "excel";
   readonly PostgressTool: "postgres";
   readonly SaveMetadataTool: "metadata";
+  readonly WhatsappSendMessageTool: "whatsapp_send_message";
 };
 type FlowNodeType = keyof typeof FLOW_TO_DAFFY_NODES;
 type FlowToolType = keyof typeof FLOW_TO_DAFFY_TOOLS;

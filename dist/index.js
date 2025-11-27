@@ -17,13 +17,15 @@ const FLOW_TO_DAFFY_TOOLS = {
 	mcp: "MCPTool",
 	excel: "ExcelGeneratorTool",
 	postgres: "PostgressTool",
-	metadata: "SaveMetadataTool"
+	metadata: "SaveMetadataTool",
+	whatsapp_send_message: "WhatsappSendMessageTool"
 };
 const DAFFY_TO_FLOW_TOOLS = {
 	MCPTool: "mcp",
 	ExcelGeneratorTool: "excel",
 	PostgressTool: "postgres",
-	SaveMetadataTool: "metadata"
+	SaveMetadataTool: "metadata",
+	WhatsappSendMessageTool: "whatsapp_send_message"
 };
 
 //#endregion

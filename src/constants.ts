@@ -19,6 +19,7 @@ export const FLOW_TO_DAFFY_TOOLS = {
   excel: 'ExcelGeneratorTool',
   postgres: 'PostgressTool',
   metadata: 'SaveMetadataTool',
+  whatsapp_send_message: 'WhatsappSendMessageTool',
 } as const
 
 export const DAFFY_TO_FLOW_TOOLS = {
@@ -26,6 +27,7 @@ export const DAFFY_TO_FLOW_TOOLS = {
   ExcelGeneratorTool: 'excel',
   PostgressTool: 'postgres',
   SaveMetadataTool: 'metadata',
+  WhatsappSendMessageTool: 'whatsapp_send_message',
 } as const
 
 export type FlowNodeType = keyof typeof FLOW_TO_DAFFY_NODES
