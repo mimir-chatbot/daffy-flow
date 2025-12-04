@@ -2,7 +2,7 @@
   "name": "daffy-flow",
   "type": "module",
   "version": "0.0.1",
-  "packageManager": "pnpm@10.18.0",
+  "packageManager": "pnpm@10.24.0",
   "description": "An adapter for Vue Flow to work with Daffy",
   "author": "Tinke",
   "license": "MIT",
@@ -37,13 +37,13 @@
     "release": "bumpp && npm publish"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^5.4.1",
-    "@types/node": "^24.6.2",
-    "@vue-flow/core": "^1.47.0",
-    "bumpp": "^10.2.3",
-    "eslint": "^9.36.0",
-    "tsdown": "^0.15.6",
+    "@antfu/eslint-config": "^6.4.1",
+    "@types/node": "^24.10.1",
+    "@vue-flow/core": "^1.48.0",
+    "bumpp": "^10.3.2",
+    "eslint": "^9.39.1",
+    "tsdown": "^0.16.8",
     "typescript": "^5.9.3",
-    "vitest": "^3.2.4"
+    "vitest": "^4.0.15"
   }
 }

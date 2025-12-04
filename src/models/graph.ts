@@ -38,6 +38,8 @@ export type DaffyPostgressIntrospectionNode = DaffyNodeBase<typeof FLOW_TO_DAFFY
 
 export type DaffyMSSQLIntrospectionNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.mssql_introspection>
 
+export type DaffyMySQLIntrospectionNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.mysql_introspection>
+
 export interface DaffyEdge {
   id?: string
   source: string
@@ -47,7 +49,8 @@ export interface DaffyEdge {
   target_handle?: string
 }
 
-export type DaffyNode = DaffyAgentNode | DaffyToolNode | DaffyRagNode | DaffyPostgressIntrospectionNode | DaffyMSSQLIntrospectionNode
+export type DaffyNode = DaffyAgentNode | DaffyToolNode | DaffyRagNode
+  | DaffyPostgressIntrospectionNode | DaffyMSSQLIntrospectionNode | DaffyMySQLIntrospectionNode
 
 export interface DaffyGraph {
   nodes: DaffyNode[]

@@ -6,6 +6,7 @@ export default antfu({
     quotes: 'single',
   },
   typescript: true,
+  jsonc: true,
   rules: {
     'node/prefer-global/process': 'off',
     'array-bracket-spacing': 'off',

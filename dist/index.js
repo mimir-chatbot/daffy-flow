@@ -4,28 +4,32 @@ const DAFFY_TO_FLOW_NODES = {
 	RagNode: "rag",
 	ToolNode: "tool",
 	PostgressIntrospectionNode: "postgres_introspection",
-	MSSQLIntrospectionNode: "mssql_introspection"
+	MSSQLIntrospectionNode: "mssql_introspection",
+	MySQLIntrospectionNode: "mysql_introspection"
 };
 const FLOW_TO_DAFFY_NODES = {
 	agent: "AgentNode",
 	rag: "RagNode",
 	tool: "ToolNode",
 	postgres_introspection: "PostgressIntrospectionNode",
-	mssql_introspection: "MSSQLIntrospectionNode"
+	mssql_introspection: "MSSQLIntrospectionNode",
+	mysql_introspection: "MySQLIntrospectionNode"
 };
 const FLOW_TO_DAFFY_TOOLS = {
 	mcp: "MCPTool",
 	excel: "ExcelGeneratorTool",
 	postgres: "PostgressTool",
 	metadata: "SaveMetadataTool",
-	whatsapp_send_message: "WhatsappSendMessageTool"
+	whatsapp_send_message: "WhatsappSendMessageTool",
+	odbc: "AIOOdbcTool"
 };
 const DAFFY_TO_FLOW_TOOLS = {
 	MCPTool: "mcp",
 	ExcelGeneratorTool: "excel",
 	PostgressTool: "postgres",
 	SaveMetadataTool: "metadata",
-	WhatsappSendMessageTool: "whatsapp_send_message"
+	WhatsappSendMessageTool: "whatsapp_send_message",
+	AIOOdbcTool: "odbc"
 };
 
 //#endregion
@@ -132,7 +136,7 @@ function toDaffyDuck(nodes, edges) {
 			continue;
 		}
 		if (nodeType === "AgentNode") {
-			const { parallel_tool_calling = true,...settings } = node.data ?? {};
+			const { parallel_tool_calling = true, ...settings } = node.data ?? {};
 			daffyNodes.push({
 				id: node.id,
 				node: FLOW_TO_DAFFY_NODES.agent,

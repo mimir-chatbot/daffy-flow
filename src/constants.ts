@@ -4,6 +4,7 @@ export const DAFFY_TO_FLOW_NODES = {
   ToolNode: 'tool',
   PostgressIntrospectionNode: 'postgres_introspection',
   MSSQLIntrospectionNode: 'mssql_introspection',
+  MySQLIntrospectionNode: 'mysql_introspection',
 } as const
 
 export const FLOW_TO_DAFFY_NODES = {
@@ -12,6 +13,7 @@ export const FLOW_TO_DAFFY_NODES = {
   tool: 'ToolNode',
   postgres_introspection: 'PostgressIntrospectionNode',
   mssql_introspection: 'MSSQLIntrospectionNode',
+  mysql_introspection: 'MySQLIntrospectionNode',
 } as const
 
 export const FLOW_TO_DAFFY_TOOLS = {
@@ -20,6 +22,7 @@ export const FLOW_TO_DAFFY_TOOLS = {
   postgres: 'PostgressTool',
   metadata: 'SaveMetadataTool',
   whatsapp_send_message: 'WhatsappSendMessageTool',
+  odbc: 'AIOOdbcTool',
 } as const
 
 export const DAFFY_TO_FLOW_TOOLS = {
@@ -28,6 +31,7 @@ export const DAFFY_TO_FLOW_TOOLS = {
   PostgressTool: 'postgres',
   SaveMetadataTool: 'metadata',
   WhatsappSendMessageTool: 'whatsapp_send_message',
+  AIOOdbcTool: 'odbc',
 } as const
 
 export type FlowNodeType = keyof typeof FLOW_TO_DAFFY_NODES
