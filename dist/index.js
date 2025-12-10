@@ -182,7 +182,6 @@ function toDaffyDuck(nodes, edges) {
 				node.tools.push(...tools[source]);
 				break;
 			}
-			daffyNodes.push(toolNode);
 			daffyEdges.push({
 				id: `start_${toolId}_${source}`,
 				source,
@@ -195,6 +194,7 @@ function toDaffyDuck(nodes, edges) {
 				target_handle: "tools"
 			});
 		}
+		daffyNodes.push(toolNode);
 	}
 	return {
 		nodes: daffyNodes,

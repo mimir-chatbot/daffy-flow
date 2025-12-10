@@ -87,7 +87,6 @@ export function toDaffyDuck(nodes: Node[], edges: Edge[]): DaffyGraph {
         }
       }
 
-      daffyNodes.push(toolNode)
       daffyEdges.push({
         id: `start_${toolId}_${source}`,
         source,
@@ -102,6 +101,8 @@ export function toDaffyDuck(nodes: Node[], edges: Edge[]): DaffyGraph {
         target_handle: 'tools',
       })
     }
+
+    daffyNodes.push(toolNode)
   }
 
   return {
