@@ -63,8 +63,8 @@ export function toDaffyDuck(nodes: Node[], edges: Edge[]): DaffyGraph {
     target_handle: e.targetHandle || undefined,
   } satisfies DaffyEdge)))
 
-  if (Object.keys(tools).length > 0) {
-    const toolId = 'tool_node'
+  for (const source in tools) {
+    const toolId = `tool_node_${source}`
 
     const toolNode: DaffyToolNode = {
       id: toolId,
@@ -77,32 +77,28 @@ export function toDaffyDuck(nodes: Node[], edges: Edge[]): DaffyGraph {
       settings: {},
       tools: [],
     }
-
-    for (const source in tools) {
-      toolNode.tools.push(...tools[source])
-      for (const node of daffyNodes) {
-        if (node.id === source && node.node === FLOW_TO_DAFFY_NODES.agent) {
-          node.tools.push(...tools[source])
-          break
-        }
+    toolNode.tools.push(...tools[source])
+    for (const node of daffyNodes) {
+      if (node.id === source && node.node === FLOW_TO_DAFFY_NODES.agent) {
+        node.tools.push(...tools[source])
+        break
       }
-
-      daffyEdges.push({
-        id: `start_${toolId}_${source}`,
-        source,
-        source_handle: 'tools',
-        condition: {
-          [toolId]: 'tools_condition',
-        },
-      }, {
-        id: `end_${toolId}_${source}`,
-        source: toolId,
-        target: source,
-        target_handle: 'tools',
-      })
     }
 
     daffyNodes.push(toolNode)
+    daffyEdges.push({
+      id: `start_${toolId}_${source}`,
+      source,
+      source_handle: 'tools',
+      condition: {
+        [toolId]: 'tools_condition',
+      },
+    }, {
+      id: `end_${toolId}_${source}`,
+      source: toolId,
+      target: source,
+      target_handle: 'tools',
+    })
   }
 
   return {
