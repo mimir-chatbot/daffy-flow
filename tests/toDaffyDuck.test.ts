@@ -317,7 +317,7 @@ it('toDaffyDuckRagAgentWithTools', () => {
           tool_node_agent_test: 'tools_condition',
         },
         source_handle: 'tools',
-        target: "end"
+        target: 'end',
       },
       {
         id: 'end_tool_node_agent_test_agent_test',
