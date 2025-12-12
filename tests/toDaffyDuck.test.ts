@@ -262,7 +262,7 @@ it('toDaffyDuckRagAgentWithTools', () => {
         },
       },
       {
-        id: 'tool_node',
+        id: 'tool_node_agent_test',
         node: 'ToolNode',
         settings: {},
         parallel_tool_calling: true,
@@ -311,23 +311,17 @@ it('toDaffyDuckRagAgentWithTools', () => {
         target_handle: 'agent',
       },
       {
-        id: 'agent_end',
-        source: 'agent_test',
-        target: 'end',
-        source_handle: 'end',
-        target_handle: 'agent',
-      },
-      {
-        id: 'start_tool_node_agent_test',
+        id: 'start_tool_node_agent_test_agent_test',
         source: 'agent_test',
         condition: {
-          tool_node: 'tools_condition',
+          tool_node_agent_test: 'tools_condition',
         },
         source_handle: 'tools',
+        target: "end"
       },
       {
-        id: 'end_tool_node_agent_test',
-        source: 'tool_node',
+        id: 'end_tool_node_agent_test_agent_test',
+        source: 'tool_node_agent_test',
         target: 'agent_test',
         target_handle: 'tools',
       },
