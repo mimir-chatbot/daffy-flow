@@ -1,15 +1,19 @@
 import type { Edge, Node } from '@vue-flow/core'
 import type { DaffyEdge, DaffyGraph, DaffyNode, DaffyTool, DaffyToolNode } from './models/graph'
-import { FLOW_TO_DAFFY_NODES, FLOW_TO_DAFFY_TOOLS } from './constants'
-import { findConditionalEdgeTarget, findToolSource } from './helpers'
+import { DAFFY_END, FLOW_TO_DAFFY_NODES, FLOW_TO_DAFFY_TOOLS } from './constants'
+import { endTargetExist, findConditionalEdgeTarget, findToolSource } from './helpers'
 
 export function toDaffyDuck(nodes: Node[], edges: Edge[]): DaffyGraph {
   const daffyNodes: DaffyNode[] = []
   const daffyEdges: DaffyEdge[] = []
   const tools: Record<string, DaffyTool[]> = {}
 
+  const end_nodes: string[] = []
   for (const node of nodes) {
-    if (node.type === 'start' || node.type === 'end') continue
+    if (node.type === 'start' || node.type === 'end') {
+      end_nodes.push(node.id)
+      continue
+    }
 
     const nodeType = FLOW_TO_DAFFY_NODES[node.type as keyof typeof FLOW_TO_DAFFY_NODES]
 
@@ -55,13 +59,22 @@ export function toDaffyDuck(nodes: Node[], edges: Edge[]): DaffyGraph {
     })
   }
 
-  daffyEdges.push(...edges.map(e => ({
-    id: e.id,
-    source: e.source,
-    target: e.target,
-    source_handle: e.sourceHandle || undefined,
-    target_handle: e.targetHandle || undefined,
-  } satisfies DaffyEdge)))
+  for (const edge of edges) {
+    let target = edge.target
+    if (end_nodes.includes(target))
+      target = DAFFY_END
+
+    if (target === DAFFY_END && endTargetExist(edge.source, daffyEdges))
+      continue
+
+    daffyEdges.push({
+      id: edge.id,
+      source: edge.source,
+      target,
+      source_handle: edge.sourceHandle || undefined,
+      target_handle: edge.targetHandle || undefined,
+    } satisfies DaffyEdge)
+  }
 
   for (const source in tools) {
     const toolId = `tool_node_${source}`
@@ -93,6 +106,13 @@ export function toDaffyDuck(nodes: Node[], edges: Edge[]): DaffyGraph {
       }
     }
 
+    if (target && end_nodes.includes(target))
+      target = DAFFY_END
+
+    if (target === DAFFY_END && endTargetExist(source, daffyEdges))
+      continue
+
+    console.log(target)
     daffyNodes.push(toolNode)
     daffyEdges.push({
       id: `start_${toolId}_${source}`,

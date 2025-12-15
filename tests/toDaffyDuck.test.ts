@@ -108,7 +108,7 @@ it('toDaffyDuckRagAgentWithTools', () => {
       },
     },
     {
-      id: 'END',
+      id: 'node_end_0',
       type: 'end',
       position: {
         x: 1,
@@ -206,7 +206,7 @@ it('toDaffyDuckRagAgentWithTools', () => {
       id: 'agent_end',
       source: 'agent_test',
       sourceHandle: 'end',
-      target: 'end',
+      target: 'node_end_0',
       targetHandle: 'agent',
     },
   ])).toStrictEqual({
@@ -317,7 +317,7 @@ it('toDaffyDuckRagAgentWithTools', () => {
           tool_node_agent_test: 'tools_condition',
         },
         source_handle: 'tools',
-        target: 'end',
+        target: 'END',
       },
       {
         id: 'end_tool_node_agent_test_agent_test',

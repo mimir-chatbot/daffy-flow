@@ -8,6 +8,9 @@ export const DAFFY_TO_FLOW_NODES = {
   MySQLIntrospectionNode: 'mysql_introspection',
 } as const
 
+export const DAFFY_START = 'START'
+export const DAFFY_END = 'END'
+
 export const FLOW_TO_DAFFY_NODES = {
   agent: 'AgentNode',
   rag: 'RagNode',

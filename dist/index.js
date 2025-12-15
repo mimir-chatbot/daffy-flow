@@ -8,6 +8,8 @@ const DAFFY_TO_FLOW_NODES = {
 	MSSQLIntrospectionNode: "mssql_introspection",
 	MySQLIntrospectionNode: "mysql_introspection"
 };
+const DAFFY_START = "START";
+const DAFFY_END = "END";
 const FLOW_TO_DAFFY_NODES = {
 	agent: "AgentNode",
 	rag: "RagNode",
@@ -113,8 +115,12 @@ function findToolSource(source, edges) {
 	return [];
 }
 function findConditionalEdgeTarget(source, edges) {
-	for (const [index, edge] of edges.entries()) if (source == edge.source) return [index, edge.target];
+	for (const [index, edge] of edges.entries()) if (source === edge.source) return [index, edge.target];
 	return [];
+}
+function endTargetExist(source, edges) {
+	for (const edge of edges) if (edge.source === source && edge.target === DAFFY_END) return true;
+	return false;
 }
 
 //#endregion
@@ -123,8 +129,12 @@ function toDaffyDuck(nodes, edges) {
 	const daffyNodes = [];
 	const daffyEdges = [];
 	const tools = {};
+	const end_nodes = [];
 	for (const node of nodes) {
-		if (node.type === "start" || node.type === "end") continue;
+		if (node.type === "start" || node.type === "end") {
+			end_nodes.push(node.id);
+			continue;
+		}
 		const nodeType = FLOW_TO_DAFFY_NODES[node.type];
 		if (nodeType === "ToolNode") {
 			const [index, toolSource] = findToolSource(node.id, edges);
@@ -160,13 +170,18 @@ function toDaffyDuck(nodes, edges) {
 			position: node.position
 		});
 	}
-	daffyEdges.push(...edges.map((e) => ({
-		id: e.id,
-		source: e.source,
-		target: e.target,
-		source_handle: e.sourceHandle || void 0,
-		target_handle: e.targetHandle || void 0
-	})));
+	for (const edge of edges) {
+		let target = edge.target;
+		if (end_nodes.includes(target)) target = DAFFY_END;
+		if (target === DAFFY_END && endTargetExist(edge.source, daffyEdges)) continue;
+		daffyEdges.push({
+			id: edge.id,
+			source: edge.source,
+			target,
+			source_handle: edge.sourceHandle || void 0,
+			target_handle: edge.targetHandle || void 0
+		});
+	}
 	for (const source in tools) {
 		const toolId = `tool_node_${source}`;
 		const toolNode = {
@@ -181,7 +196,7 @@ function toDaffyDuck(nodes, edges) {
 			tools: []
 		};
 		toolNode.tools.push(...tools[source]);
-		let target = void 0;
+		let target;
 		for (const node of daffyNodes) if (node.id === source && node.node === FLOW_TO_DAFFY_NODES.agent) {
 			const [index, edgeTarget] = findConditionalEdgeTarget(source, daffyEdges);
 			if (index) {
@@ -191,6 +206,9 @@ function toDaffyDuck(nodes, edges) {
 			node.tools.push(...tools[source]);
 			break;
 		}
+		if (target && end_nodes.includes(target)) target = DAFFY_END;
+		if (target === DAFFY_END && endTargetExist(source, daffyEdges)) continue;
+		console.log(target);
 		daffyNodes.push(toolNode);
 		daffyEdges.push({
 			id: `start_${toolId}_${source}`,
@@ -212,5 +230,5 @@ function toDaffyDuck(nodes, edges) {
 }
 
 //#endregion
-export { DAFFY_TO_FLOW_NODES, DAFFY_TO_FLOW_TOOLS, FLOW_TO_DAFFY_NODES, FLOW_TO_DAFFY_TOOLS, fromDaffyDuck, toDaffyDuck };
+export { DAFFY_END, DAFFY_START, DAFFY_TO_FLOW_NODES, DAFFY_TO_FLOW_TOOLS, FLOW_TO_DAFFY_NODES, FLOW_TO_DAFFY_TOOLS, fromDaffyDuck, toDaffyDuck };
 //# sourceMappingURL=index.js.map
