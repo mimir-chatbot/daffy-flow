@@ -115,6 +115,14 @@ it('toDaffyDuckRagAgentWithTools', () => {
         y: 1,
       },
     },
+      {
+          id: 'node_end_1',
+          type: 'end',
+          position: {
+              x: 1,
+              y: 1,
+          },
+      },
     {
       id: 'agent_test',
       type: DAFFY_TO_FLOW_NODES.AgentNode,
@@ -209,6 +217,13 @@ it('toDaffyDuckRagAgentWithTools', () => {
       target: 'node_end_0',
       targetHandle: 'agent',
     },
+      {
+          id: 'agent_end_1',
+          source: 'agent_test',
+          sourceHandle: 'end',
+          target: 'node_end_1',
+          targetHandle: 'agent',
+      },
   ])).toStrictEqual({
     nodes: [
       {

@@ -101,6 +101,9 @@ export function toDaffyDuck(nodes: Node[], edges: Edge[]): DaffyGraph {
           daffyEdges.splice(index, 1)
         }
 
+        if (!index)
+          target = DAFFY_END
+
         node.tools.push(...tools[source])
         break
       }
@@ -109,8 +112,7 @@ export function toDaffyDuck(nodes: Node[], edges: Edge[]): DaffyGraph {
     if (target && end_nodes.includes(target))
       target = DAFFY_END
 
-    if (target === DAFFY_END && endTargetExist(source, daffyEdges))
-      continue
+
 
     console.log(target)
     daffyNodes.push(toolNode)
