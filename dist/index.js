@@ -116,10 +116,6 @@ function findToolSource(source, edges) {
 	}
 	return [];
 }
-function findConditionalEdgeTarget(source, edges) {
-	for (const [index, edge] of edges.entries()) if (source === edge.source) return [index, edge.target];
-	return [];
-}
 function endTargetExist(source, edges) {
 	for (const edge of edges) if (edge.source === source && edge.target === DAFFY_END) return true;
 	return false;
@@ -182,47 +178,6 @@ function toDaffyDuck(nodes, edges) {
 			target,
 			source_handle: edge.sourceHandle || void 0,
 			target_handle: edge.targetHandle || void 0
-		});
-	}
-	for (const source in tools) {
-		const toolId = `tool_node_${source}`;
-		const toolNode = {
-			id: toolId,
-			node: FLOW_TO_DAFFY_NODES.tool,
-			parallel_tool_calling: true,
-			position: {
-				x: 0,
-				y: 0
-			},
-			settings: {},
-			tools: []
-		};
-		toolNode.tools.push(...tools[source]);
-		let target;
-		for (const node of daffyNodes) if (node.id === source && node.node === FLOW_TO_DAFFY_NODES.agent) {
-			const [index, edgeTarget] = findConditionalEdgeTarget(source, daffyEdges);
-			if (index) {
-				target = edgeTarget;
-				daffyEdges.splice(index, 1);
-			}
-			if (!index) target = DAFFY_END;
-			node.tools.push(...tools[source]);
-			break;
-		}
-		if (target && end_nodes.includes(target)) target = DAFFY_END;
-		console.log(target);
-		daffyNodes.push(toolNode);
-		daffyEdges.push({
-			id: `start_${toolId}_${source}`,
-			source,
-			target,
-			source_handle: "tools",
-			condition: { [toolId]: "tools_condition" }
-		}, {
-			id: `end_${toolId}_${source}`,
-			source: toolId,
-			target: source,
-			target_handle: "tools"
 		});
 	}
 	return {
