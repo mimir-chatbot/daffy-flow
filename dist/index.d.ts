@@ -9,6 +9,7 @@ declare const DAFFY_TO_FLOW_NODES: {
   readonly PostgressIntrospectionNode: "postgres_introspection";
   readonly MSSQLIntrospectionNode: "mssql_introspection";
   readonly MySQLIntrospectionNode: "mysql_introspection";
+  readonly SupervisorNode: "supervisor";
 };
 declare const DAFFY_START = "START";
 declare const DAFFY_END = "END";
@@ -20,6 +21,7 @@ declare const FLOW_TO_DAFFY_NODES: {
   readonly postgres_introspection: "PostgressIntrospectionNode";
   readonly mssql_introspection: "MSSQLIntrospectionNode";
   readonly mysql_introspection: "MySQLIntrospectionNode";
+  readonly supervisor: "SupervisorNode";
 };
 declare const FLOW_TO_DAFFY_TOOLS: {
   readonly mcp: "MCPTool";
@@ -73,6 +75,7 @@ type DaffyPostgressIntrospectionNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.
 type DaffyMSSQLIntrospectionNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.mssql_introspection>;
 type DaffyConditionalLLMNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.conditional_llm>;
 type DaffyMySQLIntrospectionNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.mysql_introspection>;
+type DaffySupervisorNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.supervisor>;
 interface DaffyEdge {
   id?: string;
   source: string;
@@ -81,7 +84,7 @@ interface DaffyEdge {
   source_handle?: string;
   target_handle?: string;
 }
-type DaffyNode = DaffyAgentNode | DaffyToolNode | DaffyRagNode | DaffyPostgressIntrospectionNode | DaffyMSSQLIntrospectionNode | DaffyMySQLIntrospectionNode | DaffyConditionalLLMNode;
+type DaffyNode = DaffyAgentNode | DaffyToolNode | DaffyRagNode | DaffyPostgressIntrospectionNode | DaffyMSSQLIntrospectionNode | DaffyMySQLIntrospectionNode | DaffyConditionalLLMNode | DaffySupervisorNode;
 interface DaffyGraph {
   nodes: DaffyNode[];
   edges: DaffyEdge[];
@@ -96,5 +99,5 @@ declare function fromDaffyDuck(graph: DaffyGraph): {
 //#region src/toDaffyDuck.d.ts
 declare function toDaffyDuck(nodes: Node[], edges: Edge[]): DaffyGraph;
 //#endregion
-export { DAFFY_END, DAFFY_START, DAFFY_TO_FLOW_NODES, DAFFY_TO_FLOW_TOOLS, DaffyAgentNode, DaffyConditionalLLMNode, DaffyEdge, DaffyGraph, DaffyMSSQLIntrospectionNode, DaffyMySQLIntrospectionNode, DaffyNode, DaffyNodeAgentSettings, DaffyNodeBase, DaffyNodeType, DaffyPostgressIntrospectionNode, DaffyRagNode, DaffyTool, DaffyToolNode, DaffyToolType, FLOW_TO_DAFFY_NODES, FLOW_TO_DAFFY_TOOLS, FlowNodeType, FlowToolType, fromDaffyDuck, toDaffyDuck };
+export { DAFFY_END, DAFFY_START, DAFFY_TO_FLOW_NODES, DAFFY_TO_FLOW_TOOLS, DaffyAgentNode, DaffyConditionalLLMNode, DaffyEdge, DaffyGraph, DaffyMSSQLIntrospectionNode, DaffyMySQLIntrospectionNode, DaffyNode, DaffyNodeAgentSettings, DaffyNodeBase, DaffyNodeType, DaffyPostgressIntrospectionNode, DaffyRagNode, DaffySupervisorNode, DaffyTool, DaffyToolNode, DaffyToolType, FLOW_TO_DAFFY_NODES, FLOW_TO_DAFFY_TOOLS, FlowNodeType, FlowToolType, fromDaffyDuck, toDaffyDuck };
 //# sourceMappingURL=index.d.ts.map

@@ -42,6 +42,8 @@ export type DaffyConditionalLLMNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.c
 
 export type DaffyMySQLIntrospectionNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.mysql_introspection>
 
+export type DaffySupervisorNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.supervisor>
+
 export interface DaffyEdge {
   id?: string
   source: string
@@ -52,7 +54,7 @@ export interface DaffyEdge {
 }
 
 export type DaffyNode = DaffyAgentNode | DaffyToolNode | DaffyRagNode
-  | DaffyPostgressIntrospectionNode | DaffyMSSQLIntrospectionNode | DaffyMySQLIntrospectionNode | DaffyConditionalLLMNode
+  | DaffyPostgressIntrospectionNode | DaffyMSSQLIntrospectionNode | DaffyMySQLIntrospectionNode | DaffyConditionalLLMNode | DaffySupervisorNode
 
 export interface DaffyGraph {
   nodes: DaffyNode[]

@@ -6,6 +6,7 @@ export const DAFFY_TO_FLOW_NODES = {
   PostgressIntrospectionNode: 'postgres_introspection',
   MSSQLIntrospectionNode: 'mssql_introspection',
   MySQLIntrospectionNode: 'mysql_introspection',
+  SupervisorNode: 'supervisor',
 } as const
 
 export const DAFFY_START = 'START'
@@ -19,6 +20,7 @@ export const FLOW_TO_DAFFY_NODES = {
   postgres_introspection: 'PostgressIntrospectionNode',
   mssql_introspection: 'MSSQLIntrospectionNode',
   mysql_introspection: 'MySQLIntrospectionNode',
+  supervisor: 'SupervisorNode',
 } as const
 
 export const FLOW_TO_DAFFY_TOOLS = {

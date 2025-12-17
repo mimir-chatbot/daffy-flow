@@ -6,7 +6,8 @@ const DAFFY_TO_FLOW_NODES = {
 	ConditionalLLMNode: "conditional_llm",
 	PostgressIntrospectionNode: "postgres_introspection",
 	MSSQLIntrospectionNode: "mssql_introspection",
-	MySQLIntrospectionNode: "mysql_introspection"
+	MySQLIntrospectionNode: "mysql_introspection",
+	SupervisorNode: "supervisor"
 };
 const DAFFY_START = "START";
 const DAFFY_END = "END";
@@ -17,7 +18,8 @@ const FLOW_TO_DAFFY_NODES = {
 	conditional_llm: "ConditionalLLMNode",
 	postgres_introspection: "PostgressIntrospectionNode",
 	mssql_introspection: "MSSQLIntrospectionNode",
-	mysql_introspection: "MySQLIntrospectionNode"
+	mysql_introspection: "MySQLIntrospectionNode",
+	supervisor: "SupervisorNode"
 };
 const FLOW_TO_DAFFY_TOOLS = {
 	mcp: "MCPTool",
