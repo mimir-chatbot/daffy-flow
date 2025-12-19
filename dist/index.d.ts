@@ -30,6 +30,7 @@ declare const FLOW_TO_DAFFY_TOOLS: {
   readonly metadata: "SaveMetadataTool";
   readonly whatsapp_send_message: "WhatsappSendMessageTool";
   readonly odbc: "AIOOdbcTool";
+  readonly file_reader: "FileReaderTool";
 };
 declare const DAFFY_TO_FLOW_TOOLS: {
   readonly MCPTool: "mcp";
@@ -38,6 +39,7 @@ declare const DAFFY_TO_FLOW_TOOLS: {
   readonly SaveMetadataTool: "metadata";
   readonly WhatsappSendMessageTool: "whatsapp_send_message";
   readonly AIOOdbcTool: "odbc";
+  readonly FileReaderTool: "file_reader";
 };
 type FlowNodeType = keyof typeof FLOW_TO_DAFFY_NODES;
 type FlowToolType = keyof typeof FLOW_TO_DAFFY_TOOLS;

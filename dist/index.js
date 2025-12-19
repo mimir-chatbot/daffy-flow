@@ -27,7 +27,8 @@ const FLOW_TO_DAFFY_TOOLS = {
 	postgres: "PostgressTool",
 	metadata: "SaveMetadataTool",
 	whatsapp_send_message: "WhatsappSendMessageTool",
-	odbc: "AIOOdbcTool"
+	odbc: "AIOOdbcTool",
+	file_reader: "FileReaderTool"
 };
 const DAFFY_TO_FLOW_TOOLS = {
 	MCPTool: "mcp",
@@ -35,7 +36,8 @@ const DAFFY_TO_FLOW_TOOLS = {
 	PostgressTool: "postgres",
 	SaveMetadataTool: "metadata",
 	WhatsappSendMessageTool: "whatsapp_send_message",
-	AIOOdbcTool: "odbc"
+	AIOOdbcTool: "odbc",
+	FileReaderTool: "file_reader"
 };
 
 //#endregion
@@ -154,7 +156,7 @@ function toDaffyDuck(nodes, edges) {
 			continue;
 		}
 		if (nodeType === "AgentNode") {
-			const { parallel_tool_calling = true,...settings } = node.data ?? {};
+			const { parallel_tool_calling = true, ...settings } = node.data ?? {};
 			daffyNodes.push({
 				id: node.id,
 				node: FLOW_TO_DAFFY_NODES.agent,
@@ -210,7 +212,6 @@ function toDaffyDuck(nodes, edges) {
 			break;
 		}
 		if (target && end_nodes.includes(target)) target = DAFFY_END;
-		console.log(target);
 		daffyNodes.push(toolNode);
 		daffyEdges.push({
 			id: `start_${toolId}_${source}`,

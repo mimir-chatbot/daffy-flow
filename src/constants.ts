@@ -30,6 +30,7 @@ export const FLOW_TO_DAFFY_TOOLS = {
   metadata: 'SaveMetadataTool',
   whatsapp_send_message: 'WhatsappSendMessageTool',
   odbc: 'AIOOdbcTool',
+  file_reader: 'FileReaderTool',
 } as const
 
 export const DAFFY_TO_FLOW_TOOLS = {
@@ -39,6 +40,7 @@ export const DAFFY_TO_FLOW_TOOLS = {
   SaveMetadataTool: 'metadata',
   WhatsappSendMessageTool: 'whatsapp_send_message',
   AIOOdbcTool: 'odbc',
+  FileReaderTool: 'file_reader',
 } as const
 
 export type FlowNodeType = keyof typeof FLOW_TO_DAFFY_NODES
