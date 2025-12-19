@@ -61,6 +61,9 @@ export function toDaffyDuck(nodes: Node[], edges: Edge[]): DaffyGraph {
 
   for (const edge of edges) {
     let target = edge.target
+
+    if (edge.data?.excluded) continue
+
     if (end_nodes.includes(target))
       target = DAFFY_END
 

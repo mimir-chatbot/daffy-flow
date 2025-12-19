@@ -176,6 +176,7 @@ function toDaffyDuck(nodes, edges) {
 	}
 	for (const edge of edges) {
 		let target = edge.target;
+		if (edge.data?.excluded) continue;
 		if (end_nodes.includes(target)) target = DAFFY_END;
 		if (target === DAFFY_END && endTargetExist(edge.source, daffyEdges)) continue;
 		daffyEdges.push({
