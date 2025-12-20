@@ -1,5 +1,5 @@
 import type { Edge, Node } from '@vue-flow/core'
-import type { DaffyEdge, DaffyGraph, DaffyNode, DaffyTool, DaffyToolNode } from './models/graph'
+import type { DaffyEdge, DaffyGraph, DaffyNode, DaffyTool } from './models/graph'
 import { DAFFY_END, FLOW_TO_DAFFY_NODES, FLOW_TO_DAFFY_TOOLS } from './constants'
 import { endTargetExist, findConditionalEdgeTarget, findToolSource } from './helpers'
 
@@ -80,56 +80,17 @@ export function toDaffyDuck(nodes: Node[], edges: Edge[]): DaffyGraph {
   }
 
   for (const source in tools) {
-    const toolId = `tool_node_${source}`
-
-    const toolNode: DaffyToolNode = {
-      id: toolId,
-      node: FLOW_TO_DAFFY_NODES.tool,
-      parallel_tool_calling: true,
-      position: {
-        x: 0,
-        y: 0,
-      },
-      settings: {},
-      tools: [],
-    }
-    toolNode.tools.push(...tools[source])
-    let target: string | undefined
     for (const node of daffyNodes) {
       if (node.id === source && node.node === FLOW_TO_DAFFY_NODES.agent) {
-        const [index, edgeTarget] = findConditionalEdgeTarget(source, daffyEdges)
+        const [index, _] = findConditionalEdgeTarget(source, daffyEdges)
 
-        if (index) {
-          target = edgeTarget
+        if (index)
           daffyEdges.splice(index, 1)
-        }
-
-        if (!index)
-          target = DAFFY_END
 
         node.tools.push(...tools[source])
         break
       }
     }
-
-    if (target && end_nodes.includes(target))
-      target = DAFFY_END
-
-    daffyNodes.push(toolNode)
-    daffyEdges.push({
-      id: `start_${toolId}_${source}`,
-      source,
-      target,
-      source_handle: 'tools',
-      condition: {
-        [toolId]: 'tools_condition',
-      },
-    }, {
-      id: `end_${toolId}_${source}`,
-      source: toolId,
-      target: source,
-      target_handle: 'tools',
-    })
   }
 
   return {
