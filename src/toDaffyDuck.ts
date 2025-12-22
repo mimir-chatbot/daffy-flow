@@ -1,7 +1,7 @@
 import type { Edge, Node } from '@vue-flow/core'
-import type {DaffyEdge, DaffyGraph, DaffyNode, DaffyTool, DaffyToolRequired} from './models/graph'
+import type { DaffyEdge, DaffyGraph, DaffyNode, DaffyTool } from './models/graph'
 import { DAFFY_END, FLOW_TO_DAFFY_NODES, FLOW_TO_DAFFY_TOOLS } from './constants'
-import { endTargetExist, findConditionalEdgeTarget, findToolSource } from './helpers'
+import { endTargetExist, findToolSource } from './helpers'
 
 export function toDaffyDuck(nodes: Node[], edges: Edge[]): DaffyGraph {
   const daffyNodes: DaffyNode[] = []
