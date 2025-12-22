@@ -28,6 +28,8 @@ interface WithTools {
   tools: DaffyTool[]
 }
 
+export type DaffyToolRequired = Required<DaffyTool>
+
 export type DaffyAgentNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.agent, DaffyNodeAgentSettings> & WithTools
 
 export type DaffyToolNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.tool> & WithTools
