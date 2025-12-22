@@ -82,12 +82,6 @@ export function toDaffyDuck(nodes: Node[], edges: Edge[]): DaffyGraph {
   for (const source in tools) {
     for (const node of daffyNodes) {
       if (node.id === source && node.node === FLOW_TO_DAFFY_NODES.agent) {
-          for(const tool_node of tools[source] as [DaffyToolRequired]) {
-              const [index, _] = findConditionalEdgeTarget(source, tool_node.id, daffyEdges)
-              if (index)
-                  daffyEdges.splice(index, 1)
-          }
-
         node.tools.push(...tools[source])
         break
       }
