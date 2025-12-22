@@ -118,10 +118,6 @@ function findToolSource(source, edges) {
 	}
 	return [];
 }
-function findConditionalEdgeTarget(source, edges) {
-	for (const [index, edge] of edges.entries()) if (source === edge.source) return [index, edge.target];
-	return [];
-}
 function endTargetExist(source, edges) {
 	for (const edge of edges) if (edge.source === source && edge.target === DAFFY_END) return true;
 	return false;
@@ -188,8 +184,6 @@ function toDaffyDuck(nodes, edges) {
 		});
 	}
 	for (const source in tools) for (const node of daffyNodes) if (node.id === source && node.node === FLOW_TO_DAFFY_NODES.agent) {
-		const [index, _] = findConditionalEdgeTarget(source, daffyEdges);
-		if (index) daffyEdges.splice(index, 1);
 		node.tools.push(...tools[source]);
 		break;
 	}
