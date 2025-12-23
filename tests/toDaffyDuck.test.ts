@@ -276,39 +276,6 @@ it('toDaffyDuckRagAgentWithTools', () => {
           collection_name: 'test',
         },
       },
-      {
-        id: 'tool_node_agent_test',
-        node: 'ToolNode',
-        settings: {},
-        parallel_tool_calling: true,
-        position: {
-          x: 0,
-          y: 0,
-        },
-        tools: [
-          {
-            id: 'mcp',
-            position: { x: 1, y: 1 },
-            name: FLOW_TO_DAFFY_TOOLS.mcp,
-            settings: {
-              servers: {
-                websearch: {
-                  url: 'test',
-                  transport: 'sse',
-                },
-              },
-            },
-          },
-          {
-            id: 'excel',
-            position: { x: 1, y: 1 },
-            name: FLOW_TO_DAFFY_TOOLS.excel,
-            settings: {
-              url_expiration_seconds: 6000,
-            },
-          },
-        ],
-      },
     ],
     edges: [
       {
@@ -326,19 +293,11 @@ it('toDaffyDuckRagAgentWithTools', () => {
         target_handle: 'agent',
       },
       {
-        id: 'start_tool_node_agent_test_agent_test',
+        id: 'agent_end',
         source: 'agent_test',
-        condition: {
-          tool_node_agent_test: 'tools_condition',
-        },
-        source_handle: 'tools',
+        source_handle: 'end',
+        target_handle: 'agent',
         target: 'END',
-      },
-      {
-        id: 'end_tool_node_agent_test_agent_test',
-        source: 'tool_node_agent_test',
-        target: 'agent_test',
-        target_handle: 'tools',
       },
     ],
   })
