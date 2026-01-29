@@ -28,7 +28,8 @@ const FLOW_TO_DAFFY_TOOLS = {
 	metadata: "SaveMetadataTool",
 	whatsapp_send_message: "WhatsappSendMessageTool",
 	odbc: "AIOOdbcTool",
-	file_reader: "FileReaderTool"
+	file_reader: "FileReaderTool",
+	rag_retriever: "RagRetrieverTool"
 };
 const DAFFY_TO_FLOW_TOOLS = {
 	MCPTool: "mcp",
@@ -37,7 +38,8 @@ const DAFFY_TO_FLOW_TOOLS = {
 	SaveMetadataTool: "metadata",
 	WhatsappSendMessageTool: "whatsapp_send_message",
 	AIOOdbcTool: "odbc",
-	FileReaderTool: "file_reader"
+	FileReaderTool: "file_reader",
+	RagRetrieverTool: "rag_retriever"
 };
 
 //#endregion
@@ -152,7 +154,7 @@ function toDaffyDuck(nodes, edges) {
 			continue;
 		}
 		if (nodeType === "AgentNode") {
-			const { parallel_tool_calling = true,...settings } = node.data ?? {};
+			const { parallel_tool_calling = true, ...settings } = node.data ?? {};
 			daffyNodes.push({
 				id: node.id,
 				node: FLOW_TO_DAFFY_NODES.agent,
