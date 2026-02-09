@@ -32,6 +32,7 @@ export const FLOW_TO_DAFFY_TOOLS = {
   odbc: 'AIOOdbcTool',
   file_reader: 'FileReaderTool',
   rag_retriever: 'RagRetrieverTool',
+  chart: 'ChartTool',
 } as const
 
 export const DAFFY_TO_FLOW_TOOLS = {
@@ -43,6 +44,7 @@ export const DAFFY_TO_FLOW_TOOLS = {
   AIOOdbcTool: 'odbc',
   FileReaderTool: 'file_reader',
   RagRetrieverTool: 'rag_retriever',
+  ChartTool: 'chart',
 } as const
 
 export type FlowNodeType = keyof typeof FLOW_TO_DAFFY_NODES

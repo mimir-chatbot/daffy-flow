@@ -29,7 +29,8 @@ const FLOW_TO_DAFFY_TOOLS = {
 	whatsapp_send_message: "WhatsappSendMessageTool",
 	odbc: "AIOOdbcTool",
 	file_reader: "FileReaderTool",
-	rag_retriever: "RagRetrieverTool"
+	rag_retriever: "RagRetrieverTool",
+	chart: "ChartTool"
 };
 const DAFFY_TO_FLOW_TOOLS = {
 	MCPTool: "mcp",
@@ -39,7 +40,8 @@ const DAFFY_TO_FLOW_TOOLS = {
 	WhatsappSendMessageTool: "whatsapp_send_message",
 	AIOOdbcTool: "odbc",
 	FileReaderTool: "file_reader",
-	RagRetrieverTool: "rag_retriever"
+	RagRetrieverTool: "rag_retriever",
+	ChartTool: "chart"
 };
 
 //#endregion

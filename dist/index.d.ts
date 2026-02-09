@@ -32,6 +32,7 @@ declare const FLOW_TO_DAFFY_TOOLS: {
   readonly odbc: "AIOOdbcTool";
   readonly file_reader: "FileReaderTool";
   readonly rag_retriever: "RagRetrieverTool";
+  readonly chart: "ChartTool";
 };
 declare const DAFFY_TO_FLOW_TOOLS: {
   readonly MCPTool: "mcp";
@@ -42,6 +43,7 @@ declare const DAFFY_TO_FLOW_TOOLS: {
   readonly AIOOdbcTool: "odbc";
   readonly FileReaderTool: "file_reader";
   readonly RagRetrieverTool: "rag_retriever";
+  readonly ChartTool: "chart";
 };
 type FlowNodeType = keyof typeof FLOW_TO_DAFFY_NODES;
 type FlowToolType = keyof typeof FLOW_TO_DAFFY_TOOLS;
