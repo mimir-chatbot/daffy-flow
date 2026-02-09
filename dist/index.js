@@ -30,7 +30,8 @@ const FLOW_TO_DAFFY_TOOLS = {
 	odbc: "AIOOdbcTool",
 	file_reader: "FileReaderTool",
 	rag_retriever: "RagRetrieverTool",
-	chart: "ChartTool"
+	chart: "ChartTool",
+	forms: "FormTool"
 };
 const DAFFY_TO_FLOW_TOOLS = {
 	MCPTool: "mcp",
@@ -41,7 +42,8 @@ const DAFFY_TO_FLOW_TOOLS = {
 	AIOOdbcTool: "odbc",
 	FileReaderTool: "file_reader",
 	RagRetrieverTool: "rag_retriever",
-	ChartTool: "chart"
+	ChartTool: "chart",
+	FormTool: "forms"
 };
 
 //#endregion
@@ -79,12 +81,12 @@ function fromDaffyDuck(graph) {
 			const toolType = DAFFY_TO_FLOW_TOOLS[tool.name];
 			nodes.push({
 				id: tool.id || `tool_node_${toolType}_${node.id}`,
-				type: DAFFY_TO_FLOW_NODES.ToolNode,
+				type: toolType === "forms" ? "forms" : DAFFY_TO_FLOW_NODES.ToolNode,
 				position: tool.position || {
 					x: 0,
 					y: 0
 				},
-				data: {
+				data: toolType === "forms" ? tool.settings : {
 					value: toolType,
 					config: tool.settings
 				}
@@ -96,7 +98,7 @@ function fromDaffyDuck(graph) {
 				id: `tool_node_${toolType}_${index}`,
 				source: node.id,
 				target: tool.id || `tool_node_${toolType}_${node.id}`,
-				sourceHandle: "source-agents-tools"
+				sourceHandle: toolType === "forms" ? "source-agent-forms" : "source-agent-tools"
 			};
 		}));
 	});
@@ -140,9 +142,9 @@ function toDaffyDuck(nodes, edges) {
 			continue;
 		}
 		const nodeType = FLOW_TO_DAFFY_NODES[node.type];
-		if (nodeType === "ToolNode") {
+		if (nodeType === "ToolNode" || node.type === "forms") {
 			const [index, toolSource] = findToolSource(node.id, edges);
-			const toolType = node.data.value;
+			const toolType = node.type === "forms" ? "forms" : node.data.value;
 			if (!toolSource || index === void 0 || !(toolType in FLOW_TO_DAFFY_TOOLS)) continue;
 			const daffyToolName = FLOW_TO_DAFFY_TOOLS[toolType];
 			if (!Object.keys(tools).includes(toolSource)) tools[toolSource] = [];
@@ -150,7 +152,7 @@ function toDaffyDuck(nodes, edges) {
 				id: node.id,
 				position: node.position,
 				name: daffyToolName,
-				settings: node.data.config
+				settings: node.type === "forms" ? node.data : node.data.config
 			});
 			edges.splice(index, 1);
 			continue;

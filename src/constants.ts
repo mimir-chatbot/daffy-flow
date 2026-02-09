@@ -33,6 +33,7 @@ export const FLOW_TO_DAFFY_TOOLS = {
   file_reader: 'FileReaderTool',
   rag_retriever: 'RagRetrieverTool',
   chart: 'ChartTool',
+  forms: 'FormTool'
 } as const
 
 export const DAFFY_TO_FLOW_TOOLS = {
@@ -45,6 +46,7 @@ export const DAFFY_TO_FLOW_TOOLS = {
   FileReaderTool: 'file_reader',
   RagRetrieverTool: 'rag_retriever',
   ChartTool: 'chart',
+  FormTool: 'forms'
 } as const
 
 export type FlowNodeType = keyof typeof FLOW_TO_DAFFY_NODES

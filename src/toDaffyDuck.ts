@@ -17,9 +17,9 @@ export function toDaffyDuck(nodes: Node[], edges: Edge[]): DaffyGraph {
 
     const nodeType = FLOW_TO_DAFFY_NODES[node.type as keyof typeof FLOW_TO_DAFFY_NODES]
 
-    if (nodeType === 'ToolNode') {
+    if (nodeType === 'ToolNode' || node.type === 'forms') {
       const [index, toolSource] = findToolSource(node.id, edges)
-      const toolType = node.data.value as string
+      const toolType = node.type === 'forms' ? 'forms' : node.data.value as string
       if (!toolSource || index === undefined || !(toolType in FLOW_TO_DAFFY_TOOLS)) continue
 
       const daffyToolName = FLOW_TO_DAFFY_TOOLS[toolType as keyof typeof FLOW_TO_DAFFY_TOOLS]
@@ -31,7 +31,7 @@ export function toDaffyDuck(nodes: Node[], edges: Edge[]): DaffyGraph {
         id: node.id,
         position: node.position,
         name: daffyToolName,
-        settings: node.data.config,
+        settings: node.type === 'forms' ? node.data : node.data.config,
       })
 
       edges.splice(index, 1)

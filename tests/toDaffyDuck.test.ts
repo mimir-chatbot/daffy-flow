@@ -302,3 +302,88 @@ it('toDaffyDuckRagAgentWithTools', () => {
     ],
   })
 })
+
+it('toDaffyDuckAgentWithForms', () => {
+  expect(toDaffyDuck([
+    {
+      id: 'START',
+      type: 'start',
+      position: {
+        x: 1,
+        y: 1,
+      },
+    },
+    {
+      id: 'END',
+      type: 'end',
+      position: {
+        x: 1,
+        y: 1,
+      },
+    },
+    {
+      id: 'agent_forms',
+      type: DAFFY_TO_FLOW_NODES.AgentNode,
+      position: {
+        x: 10,
+        y: 20,
+      },
+      data: {
+        parallel_tool_calling: true,
+        api_key: '',
+        stream: true,
+        system_prompt: '',
+        temperature: 0.1,
+        model: 'openai:gpt-4o',
+      },
+    },
+    {
+      id: 'forms_tool',
+      type: 'forms',
+      position: {
+        x: 30,
+        y: 40,
+      },
+      data: {
+        form_ids: [1, 2, 3],
+      },
+    },
+  ], [
+    {
+      id: 'agent_forms_forms',
+      source: 'agent_forms',
+      sourceHandle: 'source-agent-forms',
+      target: 'forms_tool',
+    },
+  ])).toStrictEqual({
+    nodes: [
+      {
+        id: 'agent_forms',
+        node: FLOW_TO_DAFFY_NODES.agent,
+        parallel_tool_calling: true,
+        position: {
+          x: 10,
+          y: 20,
+        },
+        settings: {
+          api_key: '',
+          stream: true,
+          system_prompt: '',
+          temperature: 0.1,
+          model: 'openai:gpt-4o',
+        },
+        tools: [
+          {
+            id: 'forms_tool',
+            position: { x: 30, y: 40 },
+            name: FLOW_TO_DAFFY_TOOLS.forms,
+            settings: {
+              form_ids: [1, 2, 3],
+            },
+          },
+        ],
+      },
+    ],
+    edges: [],
+  })
+})

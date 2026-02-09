@@ -26,12 +26,9 @@ export function fromDaffyDuck(graph: DaffyGraph): { nodes: Node[], edges: Edge[]
       const toolType = DAFFY_TO_FLOW_TOOLS[tool.name]
       nodes.push({
         id: tool.id || `tool_node_${toolType}_${node.id}`,
-        type: DAFFY_TO_FLOW_NODES.ToolNode,
+        type: toolType === 'forms' ? 'forms' : DAFFY_TO_FLOW_NODES.ToolNode,
         position: tool.position || { x: 0, y: 0 },
-        data: {
-          value: toolType,
-          config: tool.settings,
-        },
+        data: toolType === 'forms' ? tool.settings : { value: toolType, config: tool.settings },
       })
     })
     edges.push(...node.tools.map((tool, index) => {
@@ -40,7 +37,7 @@ export function fromDaffyDuck(graph: DaffyGraph): { nodes: Node[], edges: Edge[]
         id: `tool_node_${toolType}_${index}`,
         source: node.id,
         target: tool.id || `tool_node_${toolType}_${node.id}`,
-        sourceHandle: 'source-agents-tools',
+        sourceHandle: toolType === 'forms' ? 'source-agent-forms' : 'source-agent-tools',
       } satisfies Edge
     }))
   })

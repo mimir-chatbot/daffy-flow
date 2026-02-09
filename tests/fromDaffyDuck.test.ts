@@ -282,7 +282,7 @@ it('fromDaffyDuckRagAgentWithTools', () => {
         id: 'tool_node_mcp_0',
         source: 'agent_test',
         target: 'mcp_tool',
-        sourceHandle: 'source-agents-tools',
+        sourceHandle: 'source-agent-tools',
       }, {
         id: 'start_agent',
         source: 'start',
@@ -303,6 +303,90 @@ it('fromDaffyDuckRagAgentWithTools', () => {
         target: 'end',
         sourceHandle: 'end',
         targetHandle: 'agent',
+      },
+    ],
+  })
+})
+
+it('fromDaffyDuckAgentWithForms', () => {
+  expect(fromDaffyDuck({
+    nodes: [
+      {
+        id: 'agent_forms',
+        node: 'AgentNode',
+        parallel_tool_calling: true,
+        position: {
+          x: 10,
+          y: 20,
+        },
+        settings: {
+          api_key: '',
+          stream: true,
+          system_prompt: '',
+          temperature: 0.1,
+          model: 'openai:gpt-4o',
+        },
+        tools: [
+          {
+            id: 'forms_tool',
+            position: { x: 30, y: 40 },
+            name: FLOW_TO_DAFFY_TOOLS.forms,
+            settings: {
+              form_ids: [1, 2, 3],
+            },
+          },
+        ],
+      },
+    ],
+    edges: [],
+  })).toStrictEqual({
+    nodes: [
+      {
+        id: 'START',
+        type: 'start',
+        deletable: false,
+        position: { x: -500, y: 0 },
+      },
+      {
+        id: 'END',
+        type: 'end',
+        deletable: false,
+        position: { x: 500, y: 0 },
+      },
+      {
+        id: 'agent_forms',
+        type: DAFFY_TO_FLOW_NODES.AgentNode,
+        position: {
+          x: 10,
+          y: 20,
+        },
+        data: {
+          parallel_tool_calling: true,
+          api_key: '',
+          stream: true,
+          system_prompt: '',
+          temperature: 0.1,
+          model: 'openai:gpt-4o',
+        },
+      },
+      {
+        id: 'forms_tool',
+        type: 'forms',
+        position: {
+          x: 30,
+          y: 40,
+        },
+        data: {
+          form_ids: [1, 2, 3],
+        },
+      },
+    ],
+    edges: [
+      {
+        id: 'tool_node_forms_0',
+        source: 'agent_forms',
+        target: 'forms_tool',
+        sourceHandle: 'source-agent-forms',
       },
     ],
   })
