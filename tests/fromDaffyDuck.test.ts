@@ -308,11 +308,11 @@ it('fromDaffyDuckRagAgentWithTools', () => {
   })
 })
 
-it('fromDaffyDuckAgentWithForms', () => {
+it('fromDaffyDuckAgentsWithFormsAndTools', () => {
   expect(fromDaffyDuck({
     nodes: [
       {
-        id: 'agent_forms',
+        id: 'agent_forms_a',
         node: 'AgentNode',
         parallel_tool_calling: true,
         position: {
@@ -328,11 +328,64 @@ it('fromDaffyDuckAgentWithForms', () => {
         },
         tools: [
           {
-            id: 'forms_tool',
+            id: 'forms_tool_a',
             position: { x: 30, y: 40 },
             name: FLOW_TO_DAFFY_TOOLS.forms,
             settings: {
-              form_ids: [1, 2, 3],
+              title: 'Lead Form',
+              fields: [
+                { name: 'email', type: 'text' },
+              ],
+            },
+          },
+          {
+            id: 'mcp_tool_a',
+            position: { x: 50, y: 60 },
+            name: FLOW_TO_DAFFY_TOOLS.mcp,
+            settings: {
+              servers: {
+                websearch: {
+                  url: 'test',
+                  transport: 'sse',
+                },
+              },
+            },
+          },
+        ],
+      },
+      {
+        id: 'agent_forms_b',
+        node: 'AgentNode',
+        parallel_tool_calling: true,
+        position: {
+          x: 110,
+          y: 120,
+        },
+        settings: {
+          api_key: '',
+          stream: true,
+          system_prompt: '',
+          temperature: 0.1,
+          model: 'openai:gpt-4o',
+        },
+        tools: [
+          {
+            id: 'excel_tool_b',
+            position: { x: 130, y: 140 },
+            name: FLOW_TO_DAFFY_TOOLS.excel,
+            settings: {
+              url_expiration_seconds: 6000,
+            },
+          },
+          {
+            id: 'forms_tool_b',
+            position: { x: 150, y: 160 },
+            name: FLOW_TO_DAFFY_TOOLS.forms,
+            settings: {
+              title: 'Lead Form',
+              fields: [
+                { name: 'email', type: 'text' },
+              ],
             },
           },
         ],
@@ -354,7 +407,7 @@ it('fromDaffyDuckAgentWithForms', () => {
         position: { x: 500, y: 0 },
       },
       {
-        id: 'agent_forms',
+        id: 'agent_forms_a',
         type: DAFFY_TO_FLOW_NODES.AgentNode,
         position: {
           x: 10,
@@ -370,22 +423,106 @@ it('fromDaffyDuckAgentWithForms', () => {
         },
       },
       {
-        id: 'forms_tool',
+        id: 'agent_forms_b',
+        type: DAFFY_TO_FLOW_NODES.AgentNode,
+        position: {
+          x: 110,
+          y: 120,
+        },
+        data: {
+          parallel_tool_calling: true,
+          api_key: '',
+          stream: true,
+          system_prompt: '',
+          temperature: 0.1,
+          model: 'openai:gpt-4o',
+        },
+      },
+      {
+        id: 'forms_tool_a',
         type: 'forms',
         position: {
           x: 30,
           y: 40,
         },
         data: {
-          form_ids: [1, 2, 3],
+          title: 'Lead Form',
+          fields: [
+            { name: 'email', type: 'text' },
+          ],
+        },
+      },
+      {
+        id: 'mcp_tool_a',
+        type: DAFFY_TO_FLOW_NODES.ToolNode,
+        position: {
+          x: 50,
+          y: 60,
+        },
+        data: {
+          value: DAFFY_TO_FLOW_TOOLS.MCPTool,
+          config: {
+            servers: {
+              websearch: {
+                url: 'test',
+                transport: 'sse',
+              },
+            },
+          },
+        },
+      },
+      {
+        id: 'excel_tool_b',
+        type: DAFFY_TO_FLOW_NODES.ToolNode,
+        position: {
+          x: 130,
+          y: 140,
+        },
+        data: {
+          value: DAFFY_TO_FLOW_TOOLS.ExcelGeneratorTool,
+          config: {
+            url_expiration_seconds: 6000,
+          },
+        },
+      },
+      {
+        id: 'forms_tool_b',
+        type: 'forms',
+        position: {
+          x: 150,
+          y: 160,
+        },
+        data: {
+          title: 'Lead Form',
+          fields: [
+            { name: 'email', type: 'text' },
+          ],
         },
       },
     ],
     edges: [
       {
         id: 'tool_node_forms_0',
-        source: 'agent_forms',
-        target: 'forms_tool',
+        source: 'agent_forms_a',
+        target: 'forms_tool_a',
+        sourceHandle: 'source-agent-forms',
+      },
+      {
+        id: 'tool_node_mcp_1',
+        source: 'agent_forms_a',
+        target: 'mcp_tool_a',
+        sourceHandle: 'source-agent-tools',
+      },
+      {
+        id: 'tool_node_excel_0',
+        source: 'agent_forms_b',
+        target: 'excel_tool_b',
+        sourceHandle: 'source-agent-tools',
+      },
+      {
+        id: 'tool_node_forms_1',
+        source: 'agent_forms_b',
+        target: 'forms_tool_b',
         sourceHandle: 'source-agent-forms',
       },
     ],
