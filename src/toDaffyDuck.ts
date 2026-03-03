@@ -38,11 +38,11 @@ export function toDaffyDuck(nodes: Node[], edges: Edge[]): DaffyGraph {
       continue
     }
 
-    if (nodeType === 'AgentNode') {
+    if (nodeType === 'AgentNode' || nodeType === 'DeepAnalysisNode') {
       const { parallel_tool_calling = true, ...settings } = node.data ?? {}
       daffyNodes.push({
         id: node.id,
-        node: FLOW_TO_DAFFY_NODES.agent,
+        node: nodeType,
         position: node.position,
         settings,
         parallel_tool_calling,
@@ -81,7 +81,7 @@ export function toDaffyDuck(nodes: Node[], edges: Edge[]): DaffyGraph {
 
   for (const source in tools) {
     for (const node of daffyNodes) {
-      if (node.id === source && node.node === FLOW_TO_DAFFY_NODES.agent) {
+      if (node.id === source && (node.node === FLOW_TO_DAFFY_NODES.agent || node.node === FLOW_TO_DAFFY_NODES.deep_analysis)) {
         node.tools.push(...tools[source])
         break
       }

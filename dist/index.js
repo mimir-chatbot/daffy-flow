@@ -7,7 +7,8 @@ const DAFFY_TO_FLOW_NODES = {
 	PostgressIntrospectionNode: "postgres_introspection",
 	MSSQLIntrospectionNode: "mssql_introspection",
 	MySQLIntrospectionNode: "mysql_introspection",
-	SupervisorNode: "supervisor"
+	SupervisorNode: "supervisor",
+	DeepAnalysisNode: "deep_analysis"
 };
 const DAFFY_START = "START";
 const DAFFY_END = "END";
@@ -19,7 +20,8 @@ const FLOW_TO_DAFFY_NODES = {
 	postgres_introspection: "PostgressIntrospectionNode",
 	mssql_introspection: "MSSQLIntrospectionNode",
 	mysql_introspection: "MySQLIntrospectionNode",
-	supervisor: "SupervisorNode"
+	supervisor: "SupervisorNode",
+	deep_analysis: "DeepAnalysisNode"
 };
 const FLOW_TO_DAFFY_TOOLS = {
 	mcp: "MCPTool",
@@ -76,7 +78,7 @@ function fromDaffyDuck(graph) {
 			..."parallel_tool_calling" in daffyNode ? { parallel_tool_calling: daffyNode.parallel_tool_calling } : {}
 		}
 	});
-	graph.nodes.filter((n) => n.node === "AgentNode").forEach((node) => {
+	graph.nodes.filter((n) => n.node === "AgentNode" || n.node === "DeepAnalysisNode").forEach((node) => {
 		node.tools.forEach((tool) => {
 			const toolType = DAFFY_TO_FLOW_TOOLS[tool.name];
 			nodes.push({
@@ -157,11 +159,11 @@ function toDaffyDuck(nodes, edges) {
 			edges.splice(index, 1);
 			continue;
 		}
-		if (nodeType === "AgentNode") {
+		if (nodeType === "AgentNode" || nodeType === "DeepAnalysisNode") {
 			const { parallel_tool_calling = true, ...settings } = node.data ?? {};
 			daffyNodes.push({
 				id: node.id,
-				node: FLOW_TO_DAFFY_NODES.agent,
+				node: nodeType,
 				position: node.position,
 				settings,
 				parallel_tool_calling,
@@ -189,7 +191,7 @@ function toDaffyDuck(nodes, edges) {
 			target_handle: edge.targetHandle || void 0
 		});
 	}
-	for (const source in tools) for (const node of daffyNodes) if (node.id === source && node.node === FLOW_TO_DAFFY_NODES.agent) {
+	for (const source in tools) for (const node of daffyNodes) if (node.id === source && (node.node === FLOW_TO_DAFFY_NODES.agent || node.node === FLOW_TO_DAFFY_NODES.deep_analysis)) {
 		node.tools.push(...tools[source]);
 		break;
 	}

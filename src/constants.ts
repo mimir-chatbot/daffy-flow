@@ -7,6 +7,7 @@ export const DAFFY_TO_FLOW_NODES = {
   MSSQLIntrospectionNode: 'mssql_introspection',
   MySQLIntrospectionNode: 'mysql_introspection',
   SupervisorNode: 'supervisor',
+  DeepAnalysisNode: 'deep_analysis',
 } as const
 
 export const DAFFY_START = 'START'
@@ -21,6 +22,7 @@ export const FLOW_TO_DAFFY_NODES = {
   mssql_introspection: 'MSSQLIntrospectionNode',
   mysql_introspection: 'MySQLIntrospectionNode',
   supervisor: 'SupervisorNode',
+  deep_analysis: 'DeepAnalysisNode',
 } as const
 
 export const FLOW_TO_DAFFY_TOOLS = {

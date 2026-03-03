@@ -21,7 +21,7 @@ export function fromDaffyDuck(graph: DaffyGraph): { nodes: Node[], edges: Edge[]
     })
   }
 
-  graph.nodes.filter(n => n.node === 'AgentNode').forEach((node) => {
+  graph.nodes.filter(n => n.node === 'AgentNode' || n.node === 'DeepAnalysisNode').forEach((node) => {
     node.tools.forEach((tool) => {
       const toolType = DAFFY_TO_FLOW_TOOLS[tool.name]
       nodes.push({
