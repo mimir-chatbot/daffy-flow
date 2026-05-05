@@ -25,11 +25,9 @@ declare const FLOW_TO_DAFFY_NODES: {
 declare const FLOW_TO_DAFFY_TOOLS: {
   readonly mcp: "MCPTool";
   readonly excel: "ExcelGeneratorTool";
-  readonly postgres: "PostgressTool";
   readonly sql_database: "SQLDatabaseTool";
   readonly metadata: "SaveMetadataTool";
   readonly whatsapp_send_message: "WhatsappSendMessageTool";
-  readonly odbc: "AIOOdbcTool";
   readonly file_reader: "FileReaderTool";
   readonly rag_retriever: "RagRetrieverTool";
   readonly chart: "ChartTool";
@@ -38,11 +36,9 @@ declare const FLOW_TO_DAFFY_TOOLS: {
 declare const DAFFY_TO_FLOW_TOOLS: {
   readonly MCPTool: "mcp";
   readonly ExcelGeneratorTool: "excel";
-  readonly PostgressTool: "postgres";
   readonly SQLDatabaseTool: "sql_database";
   readonly SaveMetadataTool: "metadata";
   readonly WhatsappSendMessageTool: "whatsapp_send_message";
-  readonly AIOOdbcTool: "odbc";
   readonly FileReaderTool: "file_reader";
   readonly RagRetrieverTool: "rag_retriever";
   readonly ChartTool: "chart";

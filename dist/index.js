@@ -23,11 +23,9 @@ const FLOW_TO_DAFFY_NODES = {
 const FLOW_TO_DAFFY_TOOLS = {
 	mcp: "MCPTool",
 	excel: "ExcelGeneratorTool",
-	postgres: "PostgressTool",
 	sql_database: "SQLDatabaseTool",
 	metadata: "SaveMetadataTool",
 	whatsapp_send_message: "WhatsappSendMessageTool",
-	odbc: "AIOOdbcTool",
 	file_reader: "FileReaderTool",
 	rag_retriever: "RagRetrieverTool",
 	chart: "ChartTool",
@@ -36,11 +34,9 @@ const FLOW_TO_DAFFY_TOOLS = {
 const DAFFY_TO_FLOW_TOOLS = {
 	MCPTool: "mcp",
 	ExcelGeneratorTool: "excel",
-	PostgressTool: "postgres",
 	SQLDatabaseTool: "sql_database",
 	SaveMetadataTool: "metadata",
 	WhatsappSendMessageTool: "whatsapp_send_message",
-	AIOOdbcTool: "odbc",
 	FileReaderTool: "file_reader",
 	RagRetrieverTool: "rag_retriever",
 	ChartTool: "chart",
