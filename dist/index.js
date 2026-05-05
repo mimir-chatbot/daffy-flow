@@ -17,9 +17,6 @@ const FLOW_TO_DAFFY_NODES = {
 	rag: "RagNode",
 	tool: "ToolNode",
 	conditional_llm: "ConditionalLLMNode",
-	postgres_introspection: "PostgressIntrospectionNode",
-	mssql_introspection: "MSSQLIntrospectionNode",
-	mysql_introspection: "MySQLIntrospectionNode",
 	supervisor: "SupervisorNode",
 	deep_analysis: "DeepAnalysisNode"
 };
@@ -27,6 +24,7 @@ const FLOW_TO_DAFFY_TOOLS = {
 	mcp: "MCPTool",
 	excel: "ExcelGeneratorTool",
 	postgres: "PostgressTool",
+	sql_database: "SQLDatabaseTool",
 	metadata: "SaveMetadataTool",
 	whatsapp_send_message: "WhatsappSendMessageTool",
 	odbc: "AIOOdbcTool",
@@ -39,6 +37,7 @@ const DAFFY_TO_FLOW_TOOLS = {
 	MCPTool: "mcp",
 	ExcelGeneratorTool: "excel",
 	PostgressTool: "postgres",
+	SQLDatabaseTool: "sql_database",
 	SaveMetadataTool: "metadata",
 	WhatsappSendMessageTool: "whatsapp_send_message",
 	AIOOdbcTool: "odbc",
@@ -160,7 +159,7 @@ function toDaffyDuck(nodes, edges) {
 			continue;
 		}
 		if (nodeType === "AgentNode" || nodeType === "DeepAnalysisNode") {
-			const { parallel_tool_calling = true, ...settings } = node.data ?? {};
+			const { parallel_tool_calling = true,...settings } = node.data ?? {};
 			daffyNodes.push({
 				id: node.id,
 				node: nodeType,
