@@ -3,9 +3,6 @@ export const DAFFY_TO_FLOW_NODES = {
   RagNode: 'rag',
   ToolNode: 'tool',
   ConditionalLLMNode: 'conditional_llm',
-  PostgressIntrospectionNode: 'postgres_introspection',
-  MSSQLIntrospectionNode: 'mssql_introspection',
-  MySQLIntrospectionNode: 'mysql_introspection',
   SupervisorNode: 'supervisor',
   DeepAnalysisNode: 'deep_analysis',
 } as const
@@ -18,9 +15,6 @@ export const FLOW_TO_DAFFY_NODES = {
   rag: 'RagNode',
   tool: 'ToolNode',
   conditional_llm: 'ConditionalLLMNode',
-  postgres_introspection: 'PostgressIntrospectionNode',
-  mssql_introspection: 'MSSQLIntrospectionNode',
-  mysql_introspection: 'MySQLIntrospectionNode',
   supervisor: 'SupervisorNode',
   deep_analysis: 'DeepAnalysisNode',
 } as const
@@ -28,10 +22,9 @@ export const FLOW_TO_DAFFY_NODES = {
 export const FLOW_TO_DAFFY_TOOLS = {
   mcp: 'MCPTool',
   excel: 'ExcelGeneratorTool',
-  postgres: 'PostgressTool',
+  sql_database: 'SQLDatabaseTool',
   metadata: 'SaveMetadataTool',
   whatsapp_send_message: 'WhatsappSendMessageTool',
-  odbc: 'AIOOdbcTool',
   file_reader: 'FileReaderTool',
   rag_retriever: 'RagRetrieverTool',
   chart: 'ChartTool',
@@ -41,10 +34,9 @@ export const FLOW_TO_DAFFY_TOOLS = {
 export const DAFFY_TO_FLOW_TOOLS = {
   MCPTool: 'mcp',
   ExcelGeneratorTool: 'excel',
-  PostgressTool: 'postgres',
+  SQLDatabaseTool: 'sql_database',
   SaveMetadataTool: 'metadata',
   WhatsappSendMessageTool: 'whatsapp_send_message',
-  AIOOdbcTool: 'odbc',
   FileReaderTool: 'file_reader',
   RagRetrieverTool: 'rag_retriever',
   ChartTool: 'chart',

@@ -28,23 +28,15 @@ interface WithTools {
   tools: DaffyTool[]
 }
 
-export type DaffyToolRequired = Required<DaffyTool>
+export type DaffyToolNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.tool> & WithTools
 
 export type DaffyAgentNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.agent, DaffyNodeAgentSettings> & WithTools
 
-export type DaffyToolNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.tool> & WithTools
-
 export type DaffyRagNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.rag>
-
-export type DaffyPostgressIntrospectionNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.postgres_introspection>
-
-export type DaffyMSSQLIntrospectionNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.mssql_introspection>
 
 export type DaffyConditionalLLMNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.conditional_llm>
 
 export type DaffyDeepAnalysisNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.deep_analysis, DaffyNodeAgentSettings> & WithTools
-
-export type DaffyMySQLIntrospectionNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.mysql_introspection>
 
 export type DaffySupervisorNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.supervisor>
 
@@ -57,8 +49,8 @@ export interface DaffyEdge {
   target_handle?: string
 }
 
-export type DaffyNode = DaffyAgentNode | DaffyToolNode | DaffyRagNode | DaffyDeepAnalysisNode
-  | DaffyPostgressIntrospectionNode | DaffyMSSQLIntrospectionNode | DaffyMySQLIntrospectionNode | DaffyConditionalLLMNode | DaffySupervisorNode
+export type DaffyNode = DaffyAgentNode | DaffyRagNode | DaffyDeepAnalysisNode
+  | DaffyConditionalLLMNode | DaffySupervisorNode | DaffyToolNode
 
 export interface DaffyGraph {
   nodes: DaffyNode[]

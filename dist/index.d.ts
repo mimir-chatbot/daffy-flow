@@ -6,9 +6,6 @@ declare const DAFFY_TO_FLOW_NODES: {
   readonly RagNode: "rag";
   readonly ToolNode: "tool";
   readonly ConditionalLLMNode: "conditional_llm";
-  readonly PostgressIntrospectionNode: "postgres_introspection";
-  readonly MSSQLIntrospectionNode: "mssql_introspection";
-  readonly MySQLIntrospectionNode: "mysql_introspection";
   readonly SupervisorNode: "supervisor";
   readonly DeepAnalysisNode: "deep_analysis";
 };
@@ -19,19 +16,15 @@ declare const FLOW_TO_DAFFY_NODES: {
   readonly rag: "RagNode";
   readonly tool: "ToolNode";
   readonly conditional_llm: "ConditionalLLMNode";
-  readonly postgres_introspection: "PostgressIntrospectionNode";
-  readonly mssql_introspection: "MSSQLIntrospectionNode";
-  readonly mysql_introspection: "MySQLIntrospectionNode";
   readonly supervisor: "SupervisorNode";
   readonly deep_analysis: "DeepAnalysisNode";
 };
 declare const FLOW_TO_DAFFY_TOOLS: {
   readonly mcp: "MCPTool";
   readonly excel: "ExcelGeneratorTool";
-  readonly postgres: "PostgressTool";
+  readonly sql_database: "SQLDatabaseTool";
   readonly metadata: "SaveMetadataTool";
   readonly whatsapp_send_message: "WhatsappSendMessageTool";
-  readonly odbc: "AIOOdbcTool";
   readonly file_reader: "FileReaderTool";
   readonly rag_retriever: "RagRetrieverTool";
   readonly chart: "ChartTool";
@@ -40,10 +33,9 @@ declare const FLOW_TO_DAFFY_TOOLS: {
 declare const DAFFY_TO_FLOW_TOOLS: {
   readonly MCPTool: "mcp";
   readonly ExcelGeneratorTool: "excel";
-  readonly PostgressTool: "postgres";
+  readonly SQLDatabaseTool: "sql_database";
   readonly SaveMetadataTool: "metadata";
   readonly WhatsappSendMessageTool: "whatsapp_send_message";
-  readonly AIOOdbcTool: "odbc";
   readonly FileReaderTool: "file_reader";
   readonly RagRetrieverTool: "rag_retriever";
   readonly ChartTool: "chart";
@@ -78,15 +70,11 @@ interface WithTools {
   parallel_tool_calling: boolean;
   tools: DaffyTool[];
 }
-type DaffyToolRequired = Required<DaffyTool>;
-type DaffyAgentNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.agent, DaffyNodeAgentSettings> & WithTools;
 type DaffyToolNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.tool> & WithTools;
+type DaffyAgentNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.agent, DaffyNodeAgentSettings> & WithTools;
 type DaffyRagNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.rag>;
-type DaffyPostgressIntrospectionNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.postgres_introspection>;
-type DaffyMSSQLIntrospectionNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.mssql_introspection>;
 type DaffyConditionalLLMNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.conditional_llm>;
 type DaffyDeepAnalysisNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.deep_analysis, DaffyNodeAgentSettings> & WithTools;
-type DaffyMySQLIntrospectionNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.mysql_introspection>;
 type DaffySupervisorNode = DaffyNodeBase<typeof FLOW_TO_DAFFY_NODES.supervisor>;
 interface DaffyEdge {
   id?: string;
@@ -96,7 +84,7 @@ interface DaffyEdge {
   source_handle?: string;
   target_handle?: string;
 }
-type DaffyNode = DaffyAgentNode | DaffyToolNode | DaffyRagNode | DaffyDeepAnalysisNode | DaffyPostgressIntrospectionNode | DaffyMSSQLIntrospectionNode | DaffyMySQLIntrospectionNode | DaffyConditionalLLMNode | DaffySupervisorNode;
+type DaffyNode = DaffyAgentNode | DaffyRagNode | DaffyDeepAnalysisNode | DaffyConditionalLLMNode | DaffySupervisorNode | DaffyToolNode;
 interface DaffyGraph {
   nodes: DaffyNode[];
   edges: DaffyEdge[];
@@ -111,5 +99,5 @@ declare function fromDaffyDuck(graph: DaffyGraph): {
 //#region src/toDaffyDuck.d.ts
 declare function toDaffyDuck(nodes: Node[], edges: Edge[]): DaffyGraph;
 //#endregion
-export { DAFFY_END, DAFFY_START, DAFFY_TO_FLOW_NODES, DAFFY_TO_FLOW_TOOLS, DaffyAgentNode, DaffyConditionalLLMNode, DaffyDeepAnalysisNode, DaffyEdge, DaffyGraph, DaffyMSSQLIntrospectionNode, DaffyMySQLIntrospectionNode, DaffyNode, DaffyNodeAgentSettings, DaffyNodeBase, DaffyNodeType, DaffyPostgressIntrospectionNode, DaffyRagNode, DaffySupervisorNode, DaffyTool, DaffyToolNode, DaffyToolRequired, DaffyToolType, FLOW_TO_DAFFY_NODES, FLOW_TO_DAFFY_TOOLS, FlowNodeType, FlowToolType, fromDaffyDuck, toDaffyDuck };
+export { DAFFY_END, DAFFY_START, DAFFY_TO_FLOW_NODES, DAFFY_TO_FLOW_TOOLS, DaffyAgentNode, DaffyConditionalLLMNode, DaffyDeepAnalysisNode, DaffyEdge, DaffyGraph, DaffyNode, DaffyNodeAgentSettings, DaffyNodeBase, DaffyNodeType, DaffyRagNode, DaffySupervisorNode, DaffyTool, DaffyToolNode, DaffyToolType, FLOW_TO_DAFFY_NODES, FLOW_TO_DAFFY_TOOLS, FlowNodeType, FlowToolType, fromDaffyDuck, toDaffyDuck };
 //# sourceMappingURL=index.d.ts.map
