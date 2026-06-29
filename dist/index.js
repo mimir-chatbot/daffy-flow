@@ -39,7 +39,6 @@ const DAFFY_TO_FLOW_TOOLS = {
 	ChartTool: "chart",
 	FormTool: "forms"
 };
-
 //#endregion
 //#region src/fromDaffyDuck.ts
 function fromDaffyDuck(graph) {
@@ -108,7 +107,6 @@ function fromDaffyDuck(graph) {
 		edges
 	};
 }
-
 //#endregion
 //#region src/helpers.ts
 function findToolSource(source, edges) {
@@ -119,10 +117,9 @@ function findToolSource(source, edges) {
 	return [];
 }
 function endTargetExist(source, edges) {
-	for (const edge of edges) if (edge.source === source && edge.target === DAFFY_END) return true;
+	for (const edge of edges) if (edge.source === source && edge.target === "END") return true;
 	return false;
 }
-
 //#endregion
 //#region src/toDaffyDuck.ts
 function toDaffyDuck(nodes, edges) {
@@ -173,8 +170,8 @@ function toDaffyDuck(nodes, edges) {
 	for (const edge of edges) {
 		let target = edge.target;
 		if (edge.data?.excluded) continue;
-		if (end_nodes.includes(target)) target = DAFFY_END;
-		if (target === DAFFY_END && endTargetExist(edge.source, daffyEdges)) continue;
+		if (end_nodes.includes(target)) target = "END";
+		if (target === "END" && endTargetExist(edge.source, daffyEdges)) continue;
 		daffyEdges.push({
 			id: edge.id,
 			source: edge.source,
@@ -192,7 +189,7 @@ function toDaffyDuck(nodes, edges) {
 		edges: daffyEdges
 	};
 }
-
 //#endregion
 export { DAFFY_END, DAFFY_START, DAFFY_TO_FLOW_NODES, DAFFY_TO_FLOW_TOOLS, FLOW_TO_DAFFY_NODES, FLOW_TO_DAFFY_TOOLS, fromDaffyDuck, toDaffyDuck };
+
 //# sourceMappingURL=index.js.map
