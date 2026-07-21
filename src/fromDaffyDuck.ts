@@ -1,6 +1,7 @@
 import type { Edge, Node } from '@vue-flow/core'
 import type { DaffyGraph } from './models/graph'
 import { DAFFY_TO_FLOW_NODES, DAFFY_TO_FLOW_TOOLS } from './constants'
+import { fakeTools } from './helpers'
 
 export function fromDaffyDuck(graph: DaffyGraph): { nodes: Node[], edges: Edge[] } {
   const nodes: Node[] = [
@@ -26,9 +27,9 @@ export function fromDaffyDuck(graph: DaffyGraph): { nodes: Node[], edges: Edge[]
       const toolType = DAFFY_TO_FLOW_TOOLS[tool.name]
       nodes.push({
         id: tool.id || `tool_node_${toolType}_${node.id}`,
-        type: toolType === 'forms' ? 'forms' : DAFFY_TO_FLOW_NODES.ToolNode,
+        type: fakeTools.includes(toolType) ? toolType : DAFFY_TO_FLOW_NODES.ToolNode,
         position: tool.position || { x: 0, y: 0 },
-        data: toolType === 'forms' ? tool.settings : { value: toolType, config: tool.settings },
+        data: fakeTools.includes(toolType) ? tool.settings : { value: toolType, config: tool.settings },
       })
     })
     edges.push(...node.tools.map((tool, index) => {
@@ -37,7 +38,7 @@ export function fromDaffyDuck(graph: DaffyGraph): { nodes: Node[], edges: Edge[]
         id: `tool_node_${toolType}_${index}`,
         source: node.id,
         target: tool.id || `tool_node_${toolType}_${node.id}`,
-        sourceHandle: toolType === 'forms' ? 'source-agent-forms' : 'source-agent-tools',
+        sourceHandle: fakeTools.includes(toolType) ? `source-agent-${toolType}` : 'source-agent-tools',
       } satisfies Edge
     }))
   })

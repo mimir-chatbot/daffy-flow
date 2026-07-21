@@ -25,3 +25,5 @@ export function endTargetExist(source: string, edges: DaffyEdge[]): boolean {
 
   return false
 }
+
+export const fakeTools: string[] = ['forms', 'triggers']

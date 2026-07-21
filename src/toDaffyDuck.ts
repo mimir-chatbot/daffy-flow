@@ -1,7 +1,7 @@
 import type { Edge, Node } from '@vue-flow/core'
 import type { DaffyEdge, DaffyGraph, DaffyNode, DaffyTool } from './models/graph'
 import { DAFFY_END, FLOW_TO_DAFFY_NODES, FLOW_TO_DAFFY_TOOLS } from './constants'
-import { endTargetExist, findToolSource } from './helpers'
+import { endTargetExist, fakeTools, findToolSource } from './helpers'
 
 export function toDaffyDuck(nodes: Node[], edges: Edge[]): DaffyGraph {
   const daffyNodes: DaffyNode[] = []
@@ -10,6 +10,8 @@ export function toDaffyDuck(nodes: Node[], edges: Edge[]): DaffyGraph {
 
   const end_nodes: string[] = []
   for (const node of nodes) {
+    if (!node.type) continue
+
     if (node.type === 'start' || node.type === 'end') {
       end_nodes.push(node.id)
       continue
@@ -17,9 +19,9 @@ export function toDaffyDuck(nodes: Node[], edges: Edge[]): DaffyGraph {
 
     const nodeType = FLOW_TO_DAFFY_NODES[node.type as keyof typeof FLOW_TO_DAFFY_NODES]
 
-    if (nodeType === 'ToolNode' || node.type === 'forms') {
+    if (nodeType === 'ToolNode' || fakeTools.includes(node.type)) {
       const [index, toolSource] = findToolSource(node.id, edges)
-      const toolType = node.type === 'forms' ? 'forms' : node.data.value as string
+      const toolType = fakeTools.includes(node.type) ? node.type : node.data.value as string
       if (!toolSource || index === undefined || !(toolType in FLOW_TO_DAFFY_TOOLS)) continue
 
       const daffyToolName = FLOW_TO_DAFFY_TOOLS[toolType as keyof typeof FLOW_TO_DAFFY_TOOLS]
@@ -31,7 +33,7 @@ export function toDaffyDuck(nodes: Node[], edges: Edge[]): DaffyGraph {
         id: node.id,
         position: node.position,
         name: daffyToolName,
-        settings: node.type === 'forms' ? node.data : node.data.config,
+        settings: fakeTools.includes(node.type) ? node.data : node.data.config,
       })
 
       edges.splice(index, 1)
@@ -64,11 +66,9 @@ export function toDaffyDuck(nodes: Node[], edges: Edge[]): DaffyGraph {
 
     if (edge.data?.excluded) continue
 
-    if (end_nodes.includes(target))
-      target = DAFFY_END
+    if (end_nodes.includes(target)) target = DAFFY_END
 
-    if (target === DAFFY_END && endTargetExist(edge.source, daffyEdges))
-      continue
+    if (target === DAFFY_END && endTargetExist(edge.source, daffyEdges)) continue
 
     daffyEdges.push({
       id: edge.id,

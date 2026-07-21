@@ -29,6 +29,7 @@ export const FLOW_TO_DAFFY_TOOLS = {
   rag_retriever: 'RagRetrieverTool',
   chart: 'ChartTool',
   forms: 'FormTool',
+  triggers: 'TriggerTool',
 } as const
 
 export const DAFFY_TO_FLOW_TOOLS = {
@@ -41,6 +42,7 @@ export const DAFFY_TO_FLOW_TOOLS = {
   RagRetrieverTool: 'rag_retriever',
   ChartTool: 'chart',
   FormTool: 'forms',
+  TriggerTool: 'triggers',
 } as const
 
 export type FlowNodeType = keyof typeof FLOW_TO_DAFFY_NODES
