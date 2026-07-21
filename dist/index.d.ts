@@ -1,5 +1,4 @@
 import { Edge, Node, XYPosition } from "@vue-flow/core";
-
 //#region src/constants.d.ts
 declare const DAFFY_TO_FLOW_NODES: {
   readonly AgentNode: "agent";
@@ -29,6 +28,7 @@ declare const FLOW_TO_DAFFY_TOOLS: {
   readonly rag_retriever: "RagRetrieverTool";
   readonly chart: "ChartTool";
   readonly forms: "FormTool";
+  readonly triggers: "TriggerTool";
 };
 declare const DAFFY_TO_FLOW_TOOLS: {
   readonly MCPTool: "mcp";
@@ -40,6 +40,7 @@ declare const DAFFY_TO_FLOW_TOOLS: {
   readonly RagRetrieverTool: "rag_retriever";
   readonly ChartTool: "chart";
   readonly FormTool: "forms";
+  readonly TriggerTool: "triggers";
 };
 type FlowNodeType = keyof typeof FLOW_TO_DAFFY_NODES;
 type FlowToolType = keyof typeof FLOW_TO_DAFFY_TOOLS;

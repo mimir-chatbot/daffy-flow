@@ -26,7 +26,8 @@ const FLOW_TO_DAFFY_TOOLS = {
 	file_reader: "FileReaderTool",
 	rag_retriever: "RagRetrieverTool",
 	chart: "ChartTool",
-	forms: "FormTool"
+	forms: "FormTool",
+	triggers: "TriggerTool"
 };
 const DAFFY_TO_FLOW_TOOLS = {
 	MCPTool: "mcp",
@@ -37,8 +38,23 @@ const DAFFY_TO_FLOW_TOOLS = {
 	FileReaderTool: "file_reader",
 	RagRetrieverTool: "rag_retriever",
 	ChartTool: "chart",
-	FormTool: "forms"
+	FormTool: "forms",
+	TriggerTool: "triggers"
 };
+//#endregion
+//#region src/helpers.ts
+function findToolSource(source, edges) {
+	for (const [index, edge] of edges.entries()) {
+		if (source === edge.target) return [index, edge.source];
+		if (source === edge.source) return [index, edge.target];
+	}
+	return [];
+}
+function endTargetExist(source, edges) {
+	for (const edge of edges) if (edge.source === source && edge.target === "END") return true;
+	return false;
+}
+const fakeTools = ["forms", "triggers"];
 //#endregion
 //#region src/fromDaffyDuck.ts
 function fromDaffyDuck(graph) {
@@ -74,12 +90,12 @@ function fromDaffyDuck(graph) {
 			const toolType = DAFFY_TO_FLOW_TOOLS[tool.name];
 			nodes.push({
 				id: tool.id || `tool_node_${toolType}_${node.id}`,
-				type: toolType === "forms" ? "forms" : DAFFY_TO_FLOW_NODES.ToolNode,
+				type: fakeTools.includes(toolType) ? toolType : DAFFY_TO_FLOW_NODES.ToolNode,
 				position: tool.position || {
 					x: 0,
 					y: 0
 				},
-				data: toolType === "forms" ? tool.settings : {
+				data: fakeTools.includes(toolType) ? tool.settings : {
 					value: toolType,
 					config: tool.settings
 				}
@@ -91,7 +107,7 @@ function fromDaffyDuck(graph) {
 				id: `tool_node_${toolType}_${index}`,
 				source: node.id,
 				target: tool.id || `tool_node_${toolType}_${node.id}`,
-				sourceHandle: toolType === "forms" ? "source-agent-forms" : "source-agent-tools"
+				sourceHandle: fakeTools.includes(toolType) ? `source-agent-${toolType}` : "source-agent-tools"
 			};
 		}));
 	});
@@ -108,19 +124,6 @@ function fromDaffyDuck(graph) {
 	};
 }
 //#endregion
-//#region src/helpers.ts
-function findToolSource(source, edges) {
-	for (const [index, edge] of edges.entries()) {
-		if (source === edge.target) return [index, edge.source];
-		if (source === edge.source) return [index, edge.target];
-	}
-	return [];
-}
-function endTargetExist(source, edges) {
-	for (const edge of edges) if (edge.source === source && edge.target === "END") return true;
-	return false;
-}
-//#endregion
 //#region src/toDaffyDuck.ts
 function toDaffyDuck(nodes, edges) {
 	const daffyNodes = [];
@@ -128,14 +131,15 @@ function toDaffyDuck(nodes, edges) {
 	const tools = {};
 	const end_nodes = [];
 	for (const node of nodes) {
+		if (!node.type) continue;
 		if (node.type === "start" || node.type === "end") {
 			end_nodes.push(node.id);
 			continue;
 		}
 		const nodeType = FLOW_TO_DAFFY_NODES[node.type];
-		if (nodeType === "ToolNode" || node.type === "forms") {
+		if (nodeType === "ToolNode" || fakeTools.includes(node.type)) {
 			const [index, toolSource] = findToolSource(node.id, edges);
-			const toolType = node.type === "forms" ? "forms" : node.data.value;
+			const toolType = fakeTools.includes(node.type) ? node.type : node.data.value;
 			if (!toolSource || index === void 0 || !(toolType in FLOW_TO_DAFFY_TOOLS)) continue;
 			const daffyToolName = FLOW_TO_DAFFY_TOOLS[toolType];
 			if (!Object.keys(tools).includes(toolSource)) tools[toolSource] = [];
@@ -143,7 +147,7 @@ function toDaffyDuck(nodes, edges) {
 				id: node.id,
 				position: node.position,
 				name: daffyToolName,
-				settings: node.type === "forms" ? node.data : node.data.config
+				settings: fakeTools.includes(node.type) ? node.data : node.data.config
 			});
 			edges.splice(index, 1);
 			continue;
